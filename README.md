@@ -1,5 +1,7 @@
 # Starter kit for a Terraform GitOps module
 
+**⚠️⚠️ THIS MODULE WILL INSTALL DB2WH for CP4D 3.5 ⚠️⚠️**
+
 This is a Starter kit to help with the creation of Terraform modules. The basic structure of a Terraform module is fairly
 simple and consists of the following basic values:
 
@@ -56,4 +58,3 @@ module "dev_tools_argocd" {
   name                = "argocd"
 }
 ```
-

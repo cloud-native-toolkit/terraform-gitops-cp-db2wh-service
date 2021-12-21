@@ -1,4 +1,3 @@
-
 # Resource Group Variables
 variable "resource_group_name" {
   type        = string
@@ -26,9 +25,25 @@ variable "cluster_name" {
   default     = ""
 }
 
+
+
+variable "workers" {
+  type        = number
+  description = "Number of worker nodes"
+  default     = 4
+}
+
+variable "subnets" {
+  type        = number
+  description = "Number of subnets"
+  default     = 1
+}
+
+
 variable "cluster_type" {
   type        = string
   description = "The type of cluster that should be created (openshift or kubernetes)"
+  default     = "openshift"
 }
 
 variable "cluster_exists" {
@@ -55,8 +70,8 @@ variable "git_token" {
 }
 
 variable "git_host" {
-  type        = string
-  default     = "github.com"
+  type    = string
+  default = "github.com"
 }
 
 variable "git_type" {
@@ -77,3 +92,4 @@ variable "gitops_namespace" {
 
 variable "git_username" {
 }
+

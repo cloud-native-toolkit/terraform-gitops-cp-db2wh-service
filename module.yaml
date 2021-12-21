@@ -1,4 +1,4 @@
-name: gitops-cp-db2
+name: gitops-cp-db2wh
 type: terraform
 description: ""
 tags:

@@ -1,2 +1,12 @@
 .idea/
 *.iml
+
+
+.terraform
+*.tfstate*
+/test/stages/module
+
+.tmp
+.kube
+bin2
+test/stages/gitops
