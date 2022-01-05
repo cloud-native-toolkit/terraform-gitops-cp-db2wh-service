@@ -41,7 +41,22 @@ module "setup_clis" {
   source = "github.com/cloud-native-toolkit/terraform-util-clis.git"
 }
 
+module "gitops_ibm_catalogs" {
+  source = "github.com/cloud-native-toolkit/terraform-gitops-cp-catalogs"
+}
+
+module "gitops_cp4d_operator" {
+  depends_on = [
+    gitops_ibm_catalogs
+  ]
+  source = "github.com/cloud-native-toolkit/terraform-gitops-cp4d-operator"
+}
+
 resource "null_resource" "create_yaml" {
+  depends_on = [
+    gitops_ibm_catalogs,
+    gitops_cp4d_operator
+  ]
   provisioner "local-exec" {
     command = "${path.module}/scripts/create-yaml.sh '${local.name}' '${local.yaml_dir}' "
 
