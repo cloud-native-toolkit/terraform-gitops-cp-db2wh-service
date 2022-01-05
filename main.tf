@@ -1,16 +1,41 @@
 locals {
-  name         = "my-module"
+  name         = "db2warehouse"
   bin_dir      = module.setup_clis.bin_dir
   yaml_dir     = "${path.cwd}/.tmp/${local.name}/chart/${local.name}"
   ingress_host = "${local.name}-${var.namespace}.${var.cluster_ingress_hostname}"
   ingress_url  = "https://${local.ingress_host}"
   service_url  = "http://${local.name}.${var.namespace}"
   values_content = {
+    operator_namespace = "ibm-common-services"
+    storage_class      = "portworx-shared-gp3"
+
+    cpd_platform_version  = "4.0.2"
+    cpd_platform_channel  = "v2.0"
+    db2_warehouse_version = "4.0.2"
+    db2_warehouse_channel = "v1.0"
+    cpd_namespace         = "cpd"
   }
   layer              = "services"
   application_branch = "main"
   layer_config       = var.gitops_config[local.layer]
 }
+# storage_class: portworx, portworx-shared-gp3
+# variable "cpd_platform" {
+#   type = map(string)
+#   default = {
+#     enable  = "yes"
+#     version = "4.0.2"
+#     channel = "v2.0"
+#   }
+# }
+#  variable "db2_warehouse" {
+#   type = map(string)
+#   default = {
+#     enable  = "no"
+#     version = "4.0.2"
+#     channel = "v1.0"
+#   }
+# }
 
 module "setup_clis" {
   source = "github.com/cloud-native-toolkit/terraform-util-clis.git"
@@ -18,10 +43,18 @@ module "setup_clis" {
 
 resource "null_resource" "create_yaml" {
   provisioner "local-exec" {
-    command = "${path.module}/scripts/create-yaml.sh '${local.name}' '${local.yaml_dir}'"
+    command = "${path.module}/scripts/create-yaml.sh '${local.name}' '${local.yaml_dir}' "
 
     environment = {
-      VALUES_CONTENT = yamlencode(local.values_content)
+      OPERATOR_NAMESPACE = local.values_content.operator_namespace
+      STORAGE_CLASS      = local.values_content.storage_class
+      CPD_NAMESPACE      = local.values_content.cpd_namespace
+
+      CPD_PLATFORM_VERSION = local.values_content.cpd_platform_version
+      CPD_PLATFORM_CHANNEL = local.values_content.cpd_platform_channel
+
+      DB2_WAREHOUSE_VERSION = local.values_content.db2_warehouse_version
+      DB2_WAREHOUSE_CHANNEL = local.values_content.db2_warehouse_channel
     }
   }
 }

@@ -6,6 +6,8 @@ MODULE_DIR=$(cd "${SCRIPT_DIR}/.."; pwd -P)
 NAME="$1"
 DEST_DIR="$2"
 
+mkdir -p $DEST_DIR
+
 ## Add logic here to put the yaml resource content in DEST_DIR
 
 find "${DEST_DIR}" -name "*"
@@ -34,24 +36,24 @@ cat > "${DEST_DIR}/cpd_operator.yaml" << EOL
 apiVersion: v1
 kind: Namespace
 metadata:
-  name: ${local.operator_namespace}
+  name: $OPERATOR_NAMESPACE
 ---
 apiVersion: operators.coreos.com/v1alpha2
 kind: OperatorGroup
 metadata:
   name: operatorgroup
-  namespace: ${local.operator_namespace}
+  namespace: $OPERATOR_NAMESPACE
 spec:
   targetNamespaces:
-  - ${local.operator_namespace}
+  - $OPERATOR_NAMESPACE
 ---
 apiVersion: operators.coreos.com/v1alpha1
 kind: Subscription
 metadata:
   name: cpd-operator
-  namespace: ${local.operator_namespace}
+  namespace: $OPERATOR_NAMESPACE
 spec:
-  channel: ${var.cpd_platform.channel}
+  channel: $CPD_PLATFORM_CHANNEL
   installPlanApproval: Automatic
   name: cpd-platform-operator
   source: ibm-operator-catalog
@@ -63,9 +65,9 @@ apiVersion: operators.coreos.com/v1alpha1
 kind: Subscription
 metadata:
   name: ibm-db2wh-cp4d-operator-catalog-subscription
-  namespace: ${local.operator_namespace}
+  namespace: $OPERATOR_NAMESPACE
 spec:
-  channel: ${var.db2_warehouse.channel}
+  channel: $DB2_WAREHOUSE_CHANNEL
   installPlanApproval: Automatic
   name: ibm-db2wh-cp4d-operator
   source: ibm-operator-catalog
@@ -78,9 +80,9 @@ apiVersion: databases.cpd.ibm.com/v1
 kind: Db2whService
 metadata:
   name: db2wh-cr
-  namespace: ${var.cpd_namespace}
+  namespace: $CPD_NAMESPACE
 spec:
-  storageClass: ${local.storage_class}
+  storageClass: $STORAGE_CLASS
   license:
     accept: true
     license: "Enterprise"
