@@ -6,7 +6,7 @@ locals {
   ingress_url  = "https://${local.ingress_host}"
   service_url  = "http://${local.name}.${var.namespace}"
   values_content = {
-    operator_namespace = "ibm-common-services"
+    operator_namespace = var.namespace
     storage_class      = "portworx-shared-gp3"
 
     cpd_platform_version  = "4.0.2"
@@ -19,26 +19,18 @@ locals {
   application_branch = "main"
   layer_config       = var.gitops_config[local.layer]
 }
-# storage_class: portworx, portworx-shared-gp3
-# variable "cpd_platform" {
-#   type = map(string)
-#   default = {
-#     enable  = "yes"
-#     version = "4.0.2"
-#     channel = "v2.0"
-#   }
-# }
-#  variable "db2_warehouse" {
-#   type = map(string)
-#   default = {
-#     enable  = "no"
-#     version = "4.0.2"
-#     channel = "v1.0"
-#   }
-# }
 
 module "setup_clis" {
   source = "github.com/cloud-native-toolkit/terraform-util-clis.git"
+
+  gitops_config            = module.gitops.gitops_config
+  git_credentials          = module.gitops.git_credentials
+  server_name              = module.gitops.server_name
+  namespace                = module.gitops_namespace.name
+  cluster_ingress_hostname = module.dev_cluster.platform.ingress
+  cluster_type             = module.dev_cluster.platform.type_code
+  tls_secret_name          = module.dev_cluster.platform.tls_secret
+  kubeseal_cert            = module.argocd-bootstrap.sealed_secrets_cert
 }
 
 module "gitops_ibm_catalogs" {
