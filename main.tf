@@ -22,19 +22,19 @@ locals {
 
 module "setup_clis" {
   source = "github.com/cloud-native-toolkit/terraform-util-clis.git"
-
-  gitops_config            = module.gitops.gitops_config
-  git_credentials          = module.gitops.git_credentials
-  server_name              = module.gitops.server_name
-  namespace                = module.gitops_namespace.name
-  cluster_ingress_hostname = module.dev_cluster.platform.ingress
-  cluster_type             = module.dev_cluster.platform.type_code
-  tls_secret_name          = module.dev_cluster.platform.tls_secret
-  kubeseal_cert            = module.argocd-bootstrap.sealed_secrets_cert
 }
 
 module "gitops_ibm_catalogs" {
   source = "github.com/cloud-native-toolkit/terraform-gitops-cp-catalogs"
+
+  gitops_config            = var.gitops_config
+  git_credentials          = var.git_credentials
+  server_name              = var.server_name
+  namespace                = var.namespace
+  cluster_ingress_hostname = var.cluster_ingress_hostname
+  cluster_type             = var.cluster_type
+  tls_secret_name          = var.tls_secret_name
+  kubeseal_cert            = var.kubeseal_cert
 }
 
 module "gitops_cp4d_operator" {
@@ -42,6 +42,15 @@ module "gitops_cp4d_operator" {
     gitops_ibm_catalogs
   ]
   source = "github.com/cloud-native-toolkit/terraform-gitops-cp4d-operator"
+
+  gitops_config            = var.gitops_config
+  git_credentials          = var.git_credentials
+  server_name              = var.server_name
+  namespace                = var.namespace
+  cluster_ingress_hostname = var.cluster_ingress_hostname
+  cluster_type             = var.cluster_type
+  tls_secret_name          = var.tls_secret_name
+  kubeseal_cert            = var.kubeseal_cert
 }
 
 resource "null_resource" "create_yaml" {
