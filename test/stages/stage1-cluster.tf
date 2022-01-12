@@ -5,15 +5,16 @@ module "dev_cluster" {
   region              = var.region
   ibmcloud_api_key    = var.ibmcloud_api_key
   name                = var.cluster_name
-  worker_count        = var.workers
+  worker_count        = 0
+  ocp_version         = "4.6"
+  exists              = var.cluster_exists
   name_prefix         = var.name_prefix
-  exists              = true
-  cos_id              = ""
-  vpc_subnet_count    = var.subnets
-  vpc_name            = ""
+  vpc_name            = var.vpc_cluster
   vpc_subnets         = []
+  vpc_subnet_count    = 0
+  cos_id              = ""
+  login               = "true"
 }
-
 
 resource null_resource print_resources {
   triggers = {

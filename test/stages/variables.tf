@@ -30,7 +30,7 @@ variable "cluster_name" {
 variable "workers" {
   type        = number
   description = "Number of worker nodes"
-  default     = 4
+  default     = 3
 }
 
 variable "subnets" {
