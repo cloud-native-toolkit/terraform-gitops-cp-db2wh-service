@@ -1,7 +1,7 @@
 module "mymodule" {
   depends_on = [
-    gitops_ibm_catalogs,
-    gitops_cp4d_operator
+    module.gitops_ibm_catalogs,
+    module.gitops_cp4d_operator
   ]
   source = "./module"
 
