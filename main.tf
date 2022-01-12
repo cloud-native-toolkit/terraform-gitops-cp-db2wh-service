@@ -24,40 +24,8 @@ module "setup_clis" {
   source = "github.com/cloud-native-toolkit/terraform-util-clis.git"
 }
 
-module "gitops_ibm_catalogs" {
-  source = "github.com/cloud-native-toolkit/terraform-gitops-cp-catalogs"
-
-  gitops_config            = var.gitops_config
-  git_credentials          = var.git_credentials
-  server_name              = var.server_name
-  namespace                = var.namespace
-  cluster_ingress_hostname = var.cluster_ingress_hostname
-  cluster_type             = var.cluster_type
-  tls_secret_name          = var.tls_secret_name
-  kubeseal_cert            = var.kubeseal_cert
-}
-
-module "gitops_cp4d_operator" {
-  depends_on = [
-    gitops_ibm_catalogs
-  ]
-  source = "github.com/cloud-native-toolkit/terraform-gitops-cp4d-operator"
-
-  gitops_config            = var.gitops_config
-  git_credentials          = var.git_credentials
-  server_name              = var.server_name
-  namespace                = var.namespace
-  cluster_ingress_hostname = var.cluster_ingress_hostname
-  cluster_type             = var.cluster_type
-  tls_secret_name          = var.tls_secret_name
-  kubeseal_cert            = var.kubeseal_cert
-}
 
 resource "null_resource" "create_yaml" {
-  depends_on = [
-    gitops_ibm_catalogs,
-    gitops_cp4d_operator
-  ]
   provisioner "local-exec" {
     command = "${path.module}/scripts/create-yaml.sh '${local.name}' '${local.yaml_dir}' "
 
