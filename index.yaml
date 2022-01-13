@@ -1,5 +1,5 @@
 id: github.com/cloud-native-toolkit/terraform-gitops-cp-db2wh
-name: gitops-cp-db2
+name: gitops-cp-db2wh
 type: terraform
 description: ""
 tags:
