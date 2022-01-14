@@ -34,9 +34,9 @@ resource null_resource print_resources {
     command = "echo 'Resource group: ${var.resource_group_name}'"
   }
   provisioner "local-exec" {
-    command = "echo 'Total Workers: ${module.dev_cluster.total_worker_count}'"
+    command = "echo 'Total Workers: ${module.pwx_cluster.total_worker_count}'"
   }
   provisioner "local-exec" {
-    command = "echo 'Workers: ${jsonencode(module.dev_cluster.workers)}'"
+    command = "echo 'Workers: ${jsonencode(module.pwx_cluster.workers)}'"
   }
 }
