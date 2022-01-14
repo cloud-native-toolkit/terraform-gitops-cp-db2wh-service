@@ -6,7 +6,8 @@ module "portworx_module" {
   cluster_name         = module.dev_cluster.name
   name_prefix          = var.name_prefix
   workers              = module.dev_cluster.workers
-  worker_count         = module.dev_cluster.total_worker_count
+  worker_count         = var.workers
   create_external_etcd = false
+  install_storage      = true
 }
 
