@@ -11,7 +11,7 @@ module "dev_cluster" {
   name_prefix         = var.name_prefix
   vpc_name            = var.vpc_cluster
   vpc_subnets         = []
-  vpc_subnet_count    = 0
+  vpc_subnet_count    = 1
   cos_id              = ""
   login               = "true"
 }
