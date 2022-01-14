@@ -15,8 +15,22 @@ find "${DEST_DIR}" -name "*"
 #installation based on logic here: https://github.com/IBM/cp4d-deployment
 
 
-
-
+cat > "${DEST_DIR}/db2wh_cs.yaml" << EOL
+apiVersion: operators.coreos.com/v1alpha1
+kind: CatalogSource
+metadata:
+  name: ibm-db2uoperator-catalog
+  namespace: openshift-marketplace
+spec:
+  sourceType: grpc
+  image: docker.io/ibmcom/ibm-db2uoperator-catalog:latest
+  imagePullPolicy: Always
+  displayName: IBM Db2U Catalog
+  publisher: IBM
+  updateStrategy:
+    registryPoll:
+      interval: 45m
+EOL
 
 cat > "${DEST_DIR}/db2wh_sub.yaml" << EOL
 apiVersion: operators.coreos.com/v1alpha1
