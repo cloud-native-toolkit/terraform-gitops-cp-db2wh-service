@@ -5,7 +5,7 @@ module "dev_cluster" {
   region              = var.region
   ibmcloud_api_key    = var.ibmcloud_api_key
   name                = var.cluster_name
-  worker_count        = 0
+  worker_count        = var.workers
   ocp_version         = "4.6"
   exists              = var.cluster_exists
   name_prefix         = var.name_prefix
