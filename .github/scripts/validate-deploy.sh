@@ -20,6 +20,8 @@ cd .testrepo || exit 1
 
 find . -name "*"
 
+MAX_COUNT=30
+
 if [[ ! -f "argocd/${LAYER}/cluster/${SERVER_NAME}/${TYPE}/${NAMESPACE}-${COMPONENT_NAME}.yaml" ]]; then
   echo "ArgoCD config missing - argocd/${LAYER}/cluster/${SERVER_NAME}/${TYPE}/${NAMESPACE}-${COMPONENT_NAME}.yaml"
   exit 1
@@ -37,13 +39,13 @@ echo "Printing payload/${LAYER}/namespace/${NAMESPACE}/${COMPONENT_NAME}/values.
 cat "payload/${LAYER}namespace/${NAMESPACE}/${COMPONENT_NAME}/values.yaml"
 
 count=0
-until kubectl get namespace "${NAMESPACE}" 1> /dev/null 2> /dev/null || [[ $count -eq 20 ]]; do
+until kubectl get namespace "${NAMESPACE}" 1> /dev/null 2> /dev/null || [[ $count -eq $MAX_COUNT ]]; do
   echo "Waiting for namespace: ${NAMESPACE}"
   count=$((count + 1))
   sleep 15
 done
 
-if [[ $count -eq 20 ]]; then
+if [[ $count -eq $MAX_COUNT ]]; then
   echo "Timed out waiting for namespace: ${NAMESPACE}"
   exit 1
 else
@@ -52,26 +54,39 @@ else
 fi
 
 count=0
-until kubectl get subscription "ibm-db2wh-cp4d-operator-catalog-subscription" -n "${NAMESPACE}" || [[ $count -eq 20 ]]; do
-  echo "Waiting for subscription/ibm-db2wh-cp4d-operator-catalog-subscription in ${NAMESPACE}"
+until kubectl get CatalogSource "ibm-db2uoperator-catalog" -n "openshift-marketplace" || [[ $count -eq $MAX_COUNT ]]; do
+  echo "Waiting for CatalogSourceibm-db2uoperator-catalog in openshift-marketplace"
   count=$((count + 1))
-  sleep 15
+  sleep 30
 done
 
-if [[ $count -eq 20 ]]; then
+if [[ $count -eq $MAX_COUNT ]]; then
   echo "Timed out waiting for subscription/ibm-db2wh-cp4d-operator-catalog-subscription in ${NAMESPACE}"
   kubectl get all -n "${NAMESPACE}"
   exit 1
 fi
 
 count=0
-until kubectl get db2whservice "db2wh-cr" -n "${NAMESPACE}" || [[ $count -eq 20 ]]; do
-  echo "Waiting for db2whservice/db2wh-cr in ${NAMESPACE}"
+until kubectl get subscription "ibm-db2wh-cp4d-operator-catalog-subscription" -n "${NAMESPACE}" || [[ $count -eq $MAX_COUNT ]]; do
+  echo "Waiting for subscription/ibm-db2wh-cp4d-operator-catalog-subscription in ${NAMESPACE}"
   count=$((count + 1))
-  sleep 15
+  sleep 30
 done
 
-if [[ $count -eq 20 ]]; then
+if [[ $count -eq $MAX_COUNT ]]; then
+  echo "Timed out waiting for subscription/ibm-db2wh-cp4d-operator-catalog-subscription in ${NAMESPACE}"
+  kubectl get all -n "${NAMESPACE}"
+  exit 1
+fi
+
+count=0
+until kubectl get db2whservice "db2wh-cr" -n "${NAMESPACE}" || [[ $count -eq $MAX_COUNT ]]; do
+  echo "Waiting for db2whservice/db2wh-cr in ${NAMESPACE}"
+  count=$((count + 1))
+  sleep 30
+done
+
+if [[ $count -eq $MAX_COUNT ]]; then
   echo "Timed out waiting for db2whservice/db2wh-cr in ${NAMESPACE}"
   kubectl get all -n "${NAMESPACE}"
   exit 1
