@@ -14,6 +14,15 @@ variable "region" {
   description = "Region for VLANs defined in private_vlan_number and public_vlan_number."
 }
 
+variable "server_url" {
+  type        = string
+}
+
+variable "bootstrap_prefix" {
+  type = string
+  default = ""
+}
+
 variable "namespace" {
   type        = string
   description = "Namespace for tools"
