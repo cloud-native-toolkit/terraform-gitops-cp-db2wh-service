@@ -25,6 +25,8 @@ module does and how it does it.
 
 The module depends on the following software components:
 
+- assumes preinstalled cloud pak for data & storage class (portworx/ocs)
+
 ### Command-line tools
 
 - terraform - v12

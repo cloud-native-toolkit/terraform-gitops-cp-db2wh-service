@@ -14,22 +14,18 @@ find "${DEST_DIR}" -name "*"
 
 #installation based on logic here: https://github.com/IBM/cp4d-deployment
 
-
-cat > "${DEST_DIR}/db2wh_cs.yaml" << EOL
+cat > "${DEST_DIR}/db2wu_sub.yaml" << EOL
 apiVersion: operators.coreos.com/v1alpha1
-kind: CatalogSource
+kind: Subscription
 metadata:
-  name: ibm-db2uoperator-catalog
-  namespace: openshift-marketplace
+  name: ibm-db2uoperator-catalog-subscription
+  namespace: ibm-common-services    # Pick the project that contains the Cloud Pak for Data operator
 spec:
-  sourceType: grpc
-  image: docker.io/ibmcom/ibm-db2uoperator-catalog:latest
-  imagePullPolicy: Always
-  displayName: IBM Db2U Catalog
-  publisher: IBM
-  updateStrategy:
-    registryPoll:
-      interval: 45m
+  channel: v1.1
+  name: db2u-operator
+  installPlanApproval: Automatic
+  source: ibm-operator-catalog
+  sourceNamespace: openshift-marketplace
 EOL
 
 cat > "${DEST_DIR}/db2wh_sub.yaml" << EOL

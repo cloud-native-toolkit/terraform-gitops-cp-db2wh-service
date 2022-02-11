@@ -79,18 +79,8 @@ if [[ $count -eq $MAX_COUNT ]]; then
   exit 1
 fi
 
-count=0
-until kubectl get db2whservice "db2wh-cr" -n "${NAMESPACE}" || [[ $count -eq $MAX_COUNT ]]; do
-  echo "Waiting for db2whservice/db2wh-cr in ${NAMESPACE}"
-  count=$((count + 1))
-  sleep 30
-done
-
-if [[ $count -eq $MAX_COUNT ]]; then
-  echo "Timed out waiting for db2whservice/db2wh-cr in ${NAMESPACE}"
-  kubectl get all -n "${NAMESPACE}"
-  exit 1
-fi
+#debugging pause for 10 mins
+sleep 600
 
 cd ..
 rm -rf .testrepo

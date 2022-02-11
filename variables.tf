@@ -96,3 +96,17 @@ variable "server_name" {
   description = "The name of the server"
   default     = "default"
 }
+
+
+
+variable "cpd_operator_namespace" {
+  type        = string
+  description = "Namespace where cpd is deployed"
+  default     = "cpd-operators"
+}
+
+variable "cpd_instance_namespace" {
+  type        = string
+  description = "Namespace where cpd is deployed"
+  default     = "cpd-instance"
+}

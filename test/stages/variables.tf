@@ -102,3 +102,14 @@ variable "gitops_namespace" {
 variable "git_username" {
 }
 
+variable "cpd_operator_namespace" {
+  type        = string
+  description = "Namespace where cpd is deployed"
+  default     = "cpd-operators"
+}
+
+variable "cpd_isntance_namespace" {
+  type        = string
+  description = "Namespace where cpd is deployed"
+  default = "gitops-cp4d-instance"
+}
