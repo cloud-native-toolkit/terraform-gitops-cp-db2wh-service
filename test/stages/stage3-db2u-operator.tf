@@ -1,8 +1,8 @@
 module "gitops_cp4d_operator" {
-  depends_on = [
-    module.gitops_ibm_catalogs
-  ]
-  source = "https://github.com/cloud-native-toolkit/terraform-gitops-db2u-operator"
+  # depends_on = [
+  #   module.gitops_ibm_catalogs
+  # ]
+  source = "github.com/cloud-native-toolkit/terraform-gitops-db2u-operator"
 
   gitops_config = module.gitops.gitops_config
   git_credentials = module.gitops.git_credentials
