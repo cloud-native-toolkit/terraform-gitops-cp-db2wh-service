@@ -79,6 +79,8 @@ if [[ $count -eq $MAX_COUNT ]]; then
   exit 1
 fi
 
+#db2wh-cr
+
 #debugging pause for 10 mins
 sleep 600
 

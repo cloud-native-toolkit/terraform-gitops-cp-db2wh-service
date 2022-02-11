@@ -99,14 +99,26 @@ variable "server_name" {
 
 
 
-variable "cpd_operator_namespace" {
+variable "common_services_namespace" {
   type        = string
   description = "Namespace where cpd is deployed"
-  default     = "cpd-operators"
+  default     = "ibm-common-services"
 }
 
-variable "cpd_instance_namespace" {
+variable "storage_class" {
   type        = string
-  description = "Namespace where cpd is deployed"
-  default     = "cpd-instance"
+  description = "Storage class for DB2WH instance"
+  default     = "portworx-shared-gp3"
+}
+
+variable "db2_warehouse_version" {
+  type        = string
+  description = "DB2 Warehouse version"
+  default     = "4.0.2"
+}
+
+variable "db2_warehouse_channel" {
+  type        = string
+  description = "DB2 Warehouse operator subscription channel"
+  default     = "v1.0"
 }

@@ -19,7 +19,7 @@ apiVersion: operators.coreos.com/v1alpha1
 kind: Subscription
 metadata:
   name: ibm-db2uoperator-catalog-subscription
-  namespace: ibm-common-services    # Pick the project that contains the Cloud Pak for Data operator
+  namespace: $CS_NAMESPACE    # Pick the project that contains the Cloud Pak for Data operator
 spec:
   channel: v1.1
   name: db2u-operator
@@ -33,7 +33,7 @@ apiVersion: operators.coreos.com/v1alpha1
 kind: Subscription
 metadata:
   name: ibm-db2wh-cp4d-operator-catalog-subscription
-  namespace: $OPERATOR_NAMESPACE
+  namespace: $CS_NAMESPACE
 spec:
   channel: $DB2_WAREHOUSE_CHANNEL
   installPlanApproval: Automatic
@@ -48,7 +48,7 @@ apiVersion: databases.cpd.ibm.com/v1
 kind: Db2whService
 metadata:
   name: db2wh-cr
-  namespace: $CPD_NAMESPACE
+  namespace: $INSTANCE_NAMESPACE
 spec:
   storageClass: $STORAGE_CLASS
   license:

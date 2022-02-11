@@ -6,7 +6,7 @@ locals {
   ingress_url  = "https://${local.ingress_host}"
   service_url  = "http://${local.name}.${var.namespace}"
   values_content = {
-    operator_namespace = var.cpd_operator_namespace
+    operator_namespace = var.common_services_namespace
     storage_class      = "portworx-shared-gp3"
 
     db2_warehouse_version = "4.0.2"
@@ -28,15 +28,12 @@ resource "null_resource" "create_yaml" {
     command = "${path.module}/scripts/create-yaml.sh '${local.name}' '${local.yaml_dir}' "
 
     environment = {
-      OPERATOR_NAMESPACE = local.values_content.operator_namespace
-      STORAGE_CLASS      = local.values_content.storage_class
-      CPD_NAMESPACE      = local.values_content.cpd_namespace
+      CS_NAMESPACE            = var.common_services_namespace
+      STORAGE_CLASS           = var.storage_class
+      INSTANCE_NAMESPACE      = var.namespace
 
-      CPD_PLATFORM_VERSION = local.values_content.cpd_platform_version
-      CPD_PLATFORM_CHANNEL = local.values_content.cpd_platform_channel
-
-      DB2_WAREHOUSE_VERSION = local.values_content.db2_warehouse_version
-      DB2_WAREHOUSE_CHANNEL = local.values_content.db2_warehouse_channel
+      DB2_WAREHOUSE_VERSION = var.db2_warehouse_version
+      DB2_WAREHOUSE_CHANNEL = var.db2_warehouse_channel
     }
   }
 }
