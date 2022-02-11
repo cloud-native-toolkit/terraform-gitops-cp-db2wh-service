@@ -6,12 +6,6 @@ locals {
   ingress_url  = "https://${local.ingress_host}"
   service_url  = "http://${local.name}.${var.namespace}"
   values_content = {
-    operator_namespace = var.common_services_namespace
-    storage_class      = "portworx-shared-gp3"
-
-    db2_warehouse_version = "4.0.2"
-    db2_warehouse_channel = "v1.0"
-    cpd_namespace         = var.cpd_instance_namespace
   }
   layer              = "services"
   application_branch = "main"
