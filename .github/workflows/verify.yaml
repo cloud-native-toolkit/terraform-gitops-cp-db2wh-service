@@ -57,6 +57,7 @@ jobs:
           TF_VAR_bootstrap_prefix: ${{ steps.variables.outputs.repo }}
           TF_VAR_ibmcloud_api_key: ${{ secrets.IBMCLOUD_API_KEY }}
           IBMCLOUD_API_KEY: ${{ secrets.IBMCLOUD_API_KEY }}
+          TF_VAR_cp_entitlement_key: ${{secrets.CP_ENTITLEMENT_KEY}}
 
       - name: Verify destroy on ${{ matrix.testcase }}
         uses: cloud-native-toolkit/action-module-verify-destroy@main
@@ -71,6 +72,7 @@ jobs:
           TF_VAR_bootstrap_prefix: ${{ steps.variables.outputs.repo }}
           TF_VAR_ibmcloud_api_key: ${{ secrets.IBMCLOUD_API_KEY }}
           IBMCLOUD_API_KEY: ${{ secrets.IBMCLOUD_API_KEY }}
+          TF_VAR_cp_entitlement_key: ${{secrets.CP_ENTITLEMENT_KEY}}
 
   verifyMetadata:
     runs-on: ubuntu-latest
