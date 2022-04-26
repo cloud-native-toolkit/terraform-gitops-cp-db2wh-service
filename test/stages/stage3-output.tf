@@ -9,7 +9,7 @@ resource null_resource write_outputs {
         namespace   = module.mymodule.namespace
         server_name = module.mymodule.server_name
         layer       = module.mymodule.layer
-        layer_dir   = module.mymodule.layer == "infrastructure" ? "1-infrastructure" : (module.gitops_module.layer == "services" ? "2-services" : "3-applications")
+        layer_dir   = module.mymodule.layer == "infrastructure" ? "1-infrastructure" : (module.mymodule.layer == "services" ? "2-services" : "3-applications")
         type        = module.mymodule.type
       })
     }
