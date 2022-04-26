@@ -7,8 +7,10 @@ locals {
   service_url  = "http://${local.name}.${var.namespace}"
   values_content = {
   }
-  layer              = "services"
+  layer = "services"
+  type  = "base"
   application_branch = "main"
+  namespace = var.namespace
   layer_config       = var.gitops_config[local.layer]
 }
 
@@ -51,6 +53,18 @@ resource "null_resource" "debug_yamls" {
 resource "null_resource" "setup_gitops" {
   depends_on = [null_resource.create_yaml, null_resource.debug_yamls]
 
+  triggers = {
+    name = local.name
+    namespace = var.namespace
+    yaml_dir = local.yaml_dir
+    server_name = var.server_name
+    layer = local.layer
+    type = local.type
+    git_credentials = yamlencode(var.git_credentials)
+    gitops_config   = yamlencode(var.gitops_config)
+    bin_dir = local.bin_dir
+  }
+
   provisioner "local-exec" {
     command = "${local.bin_dir}/igc gitops-module '${local.name}' -n '${var.namespace}' --contentDir '${local.yaml_dir}' --serverName '${var.server_name}' -l '${local.layer}' --debug"
 
@@ -58,5 +72,15 @@ resource "null_resource" "setup_gitops" {
       GIT_CREDENTIALS = yamlencode(var.git_credentials)
       GITOPS_CONFIG   = yamlencode(var.gitops_config)
     }
+  }
+}
+
+provisioner "local-exec" {
+  when = destroy
+  command = "${self.triggers.bin_dir}/igc gitops-module '${self.triggers.name}' -n '${self.triggers.namespace}' --delete --contentDir '${self.triggers.yaml_dir}' --serverName '${self.triggers.server_name}' -l '${self.triggers.layer}' --type '${self.triggers.type}'"
+
+  environment = {
+      GIT_CREDENTIALS = nonsensitive(self.triggers.git_credentials)
+      GITOPS_CONFIG   = self.triggers.gitops_config
   }
 }
