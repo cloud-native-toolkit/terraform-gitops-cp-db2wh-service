@@ -105,3 +105,7 @@ variable "git_username" {
 variable "kubeseal_namespace" {
   default = "sealed-secrets"
 }
+
+
+variable "cp_entitlement_key" {
+}
