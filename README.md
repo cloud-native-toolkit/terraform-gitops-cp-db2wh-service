@@ -1,6 +1,6 @@
 # Starter kit for a Terraform GitOps module
 
-**⚠️⚠️ THIS MODULE WILL INSTALL DB2WH for CP4D 3.5 ⚠️⚠️**
+**⚠️⚠️ THIS MODULE WILL INSTALL DB2WH for CP4D 4.0 ⚠️⚠️**
 
 This is a Starter kit to help with the creation of Terraform modules. The basic structure of a Terraform module is fairly
 simple and consists of the following basic values:
