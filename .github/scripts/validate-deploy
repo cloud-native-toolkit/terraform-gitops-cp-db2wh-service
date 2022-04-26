@@ -3,14 +3,27 @@
 GIT_REPO=$(cat git_repo)
 GIT_TOKEN=$(cat git_token)
 
+BIN_DIR=$(cat .bin_dir)
+
+export PATH="${BIN_DIR}:${PATH}"
+
+if ! command -v oc 1> /dev/null 2> /dev/null; then
+  echo "oc cli not found" >&2
+  exit 1
+fi
+
+if ! command -v kubectl 1> /dev/null 2> /dev/null; then
+  echo "kubectl cli not found" >&2
+  exit 1
+fi
+
 export KUBECONFIG=$(cat .kubeconfig)
 NAMESPACE=$(cat .namespace)
-BRANCH="main"
-SERVER_NAME="default"
-TYPE="base"
-LAYER="2-services"
-
-COMPONENT_NAME="db2warehouse"
+COMPONENT_NAME=$(jq -r '.name // "my-module"' gitops-output.json)
+BRANCH=$(jq -r '.branch // "main"' gitops-output.json)
+SERVER_NAME=$(jq -r '.server_name // "default"' gitops-output.json)
+LAYER=$(jq -r '.layer_dir // "2-services"' gitops-output.json)
+TYPE=$(jq -r '.type // "base"' gitops-output.json)
 
 mkdir -p .testrepo
 
@@ -19,8 +32,6 @@ git clone https://${GIT_TOKEN}@${GIT_REPO} .testrepo
 cd .testrepo || exit 1
 
 find . -name "*"
-
-MAX_COUNT=30
 
 if [[ ! -f "argocd/${LAYER}/cluster/${SERVER_NAME}/${TYPE}/${NAMESPACE}-${COMPONENT_NAME}.yaml" ]]; then
   echo "ArgoCD config missing - argocd/${LAYER}/cluster/${SERVER_NAME}/${TYPE}/${NAMESPACE}-${COMPONENT_NAME}.yaml"
@@ -31,21 +42,21 @@ echo "Printing argocd/${LAYER}/cluster/${SERVER_NAME}/${TYPE}/${NAMESPACE}-${COM
 cat "argocd/${LAYER}/cluster/${SERVER_NAME}/${TYPE}/${NAMESPACE}-${COMPONENT_NAME}.yaml"
 
 if [[ ! -f "payload/${LAYER}/namespace/${NAMESPACE}/${COMPONENT_NAME}/values.yaml" ]]; then
-  echo "Application values not found - payload/2-services/namespace/${NAMESPACE}/${COMPONENT_NAME}/values.yaml"
+  echo "Application values not found - payload/${LAYER}/namespace/${NAMESPACE}/${COMPONENT_NAME}/values.yaml"
   exit 1
 fi
 
 echo "Printing payload/${LAYER}/namespace/${NAMESPACE}/${COMPONENT_NAME}/values.yaml"
-cat "payload/${LAYER}namespace/${NAMESPACE}/${COMPONENT_NAME}/values.yaml"
+cat "payload/${LAYER}/namespace/${NAMESPACE}/${COMPONENT_NAME}/values.yaml"
 
 count=0
-until kubectl get namespace "${NAMESPACE}" 1> /dev/null 2> /dev/null || [[ $count -eq $MAX_COUNT ]]; do
+until kubectl get namespace "${NAMESPACE}" 1> /dev/null 2> /dev/null || [[ $count -eq 20 ]]; do
   echo "Waiting for namespace: ${NAMESPACE}"
   count=$((count + 1))
   sleep 15
 done
 
-if [[ $count -eq $MAX_COUNT ]]; then
+if [[ $count -eq 20 ]]; then
   echo "Timed out waiting for namespace: ${NAMESPACE}"
   exit 1
 else
@@ -53,36 +64,21 @@ else
   sleep 30
 fi
 
+DEPLOYMENT="${COMPONENT_NAME}-${BRANCH}"
 count=0
-until kubectl get CatalogSource "ibm-db2uoperator-catalog" -n "openshift-marketplace" || [[ $count -eq $MAX_COUNT ]]; do
-  echo "Waiting for CatalogSourceibm-db2uoperator-catalog in openshift-marketplace"
+until kubectl get deployment "${DEPLOYMENT}" -n "${NAMESPACE}" || [[ $count -eq 20 ]]; do
+  echo "Waiting for deployment/${DEPLOYMENT} in ${NAMESPACE}"
   count=$((count + 1))
-  sleep 30
+  sleep 15
 done
 
-if [[ $count -eq $MAX_COUNT ]]; then
-  echo "Timed out waiting for subscription/ibm-db2wh-cp4d-operator-catalog-subscription in ${NAMESPACE}"
+if [[ $count -eq 20 ]]; then
+  echo "Timed out waiting for deployment/${DEPLOYMENT} in ${NAMESPACE}"
   kubectl get all -n "${NAMESPACE}"
   exit 1
 fi
 
-count=0
-until kubectl get subscription "ibm-db2wh-cp4d-operator-catalog-subscription" -n "${NAMESPACE}" || [[ $count -eq $MAX_COUNT ]]; do
-  echo "Waiting for subscription/ibm-db2wh-cp4d-operator-catalog-subscription in ${NAMESPACE}"
-  count=$((count + 1))
-  sleep 30
-done
-
-if [[ $count -eq $MAX_COUNT ]]; then
-  echo "Timed out waiting for subscription/ibm-db2wh-cp4d-operator-catalog-subscription in ${NAMESPACE}"
-  kubectl get all -n "${NAMESPACE}"
-  exit 1
-fi
-
-#db2wh-cr
-
-#debugging pause for 10 mins
-sleep 600
+kubectl rollout status "deployment/${DEPLOYMENT}" -n "${NAMESPACE}" || exit 1
 
 cd ..
 rm -rf .testrepo
