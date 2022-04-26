@@ -1,16 +1,15 @@
-#terraform {
-#  required_version = ">= 0.13.0"
-#
-#  required_providers {
-#    ibm = {
-#      source = "ibm-cloud/ibm"
-#      version = ">= 1.35.0"
-#    }
-#  }
-#}
-
 terraform {
+  required_version = ">= 0.13.0"
+
+  required_providers {
+    ibm = {
+      source = "ibm-cloud/ibm"
+      version = ">= 1.35.0"
+   }
+  }
 }
+
+
 
 module setup_clis {
   source = "github.com/cloud-native-toolkit/terraform-util-clis.git"
