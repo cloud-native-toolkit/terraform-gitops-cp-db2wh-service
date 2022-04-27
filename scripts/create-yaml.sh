@@ -22,7 +22,6 @@ mkdir -p $DEST_DIR
 
 ## Add logic here to put the yaml resource content in DEST_DIR
 
-## put the yaml resource content in DEST_DIR
 cp -R "${CHART_DIR}"/* "${DEST_DIR}"
 
 echo "${VALUES_CONTENT}" > "${DEST_DIR}/values.yaml"
