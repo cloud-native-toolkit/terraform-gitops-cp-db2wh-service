@@ -1,0 +1,10 @@
+
+apiVersion: databases.cpd.ibm.com/v1
+kind: Db2whService
+metadata:
+  name: db2wh-cr
+  namespace: {{ .Values.db2wh_namespace }}
+spec:
+  license:
+    accept: {{ .Values.license_accept }}
+    license: {{ .Values.license }}

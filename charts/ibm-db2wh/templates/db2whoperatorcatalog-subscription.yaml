@@ -1,0 +1,13 @@
+# DB2W Operator - https://www.ibm.com/docs/en/cloud-paks/cp-data/4.0?topic=tasks-creating-operator-subscriptions#preinstall-operator-subscriptions__install-plan
+
+apiVersion: operators.coreos.com/v1alpha1
+kind: Subscription
+metadata:
+  name: ibm-db2wh-cp4d-operator-catalog-subscription
+  namespace: {{ .Values.db2wh_namespace }}
+spec:
+  channel: {{ .Values.db2wh_channel }}
+  installPlanApproval: Automatic
+  name: ibm-db2wh-cp4d-operator
+  source: ibm-operator-catalog
+  sourceNamespace: openshift-marketplace

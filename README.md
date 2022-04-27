@@ -1,63 +1,43 @@
-# Starter kit for a Terraform GitOps module
+# CP4D - DB2 Warehourse Gitops terraform module
 
-**⚠️⚠️ THIS MODULE WILL INSTALL DB2WH for CP4D 4.0 ⚠️⚠️**
+## Db2 Warehouse on Cloud Pak for Data
 
-This is a Starter kit to help with the creation of Terraform modules. The basic structure of a Terraform module is fairly
-simple and consists of the following basic values:
+IBM Db2 Warehouse is an analytics data warehouse that features in-memory data processing and in-database analytics. It is client-managed and optimized for fast and flexible deployment, with automated scaling that supports analytics workloads. 
 
+## Supported platforms
 
-- README.md - provides a description of the module
-- main.tf - defines the logic for the module
-- variables.tf (optional) - defines the input variables for the module
-- outputs.tf (optional) - defines the values that are output from the module
+OCP 4.8
 
-Beyond those files, any other content can be added and organized however you see fit. For example, you can add a `scripts/` directory
-that contains shell scripts executed by a `local-exec` `null_resource` in the terraform module. The contents will depend on what your
-module does and how it does it.
+## Suggested companion modules
 
-## Instructions for creating a new module
+The module itself requires some information from the cluster and needs a namespace to be created. The following companion modules can help provide the required information:
 
-1. Update the title and description in the README to match the module you are creating
-2. Fill out the remaining sections in the README template as appropriate
-3. Implement your logic in the in the main.tf, variables.tf, and outputs.tf
-4. Use releases/tags to manage release versions of your module
-
-## Software dependencies
-
-The module depends on the following software components:
-
-- assumes preinstalled cloud pak for data & storage class (portworx/ocs)
-
-### Command-line tools
-
-- terraform - v12
-- kubectl
-
-### Terraform providers
-
-- IBM Cloud provider >= 1.5.3
-- Helm provider >= 1.1.1 (provided by Terraform)
-
-## Module dependencies
-
-This module makes use of the output from other modules:
-
-- GitOps - github.com/cloud-native-toolkit/terraform-tools-gitops.git
-- Namespace - github.com/cloud-native-toolkit/terraform-gitops-namespace.git
-- etc
+- Gitops: github.com/cloud-native-toolkit/terraform-tools-gitops
+- Gitops Bootstrap: github.com/cloud-native-toolkit/terraform-util-gitops-bootstrap
+- Namespace: github.com/ibm-garage-cloud/terraform-cluster-namespace
+- Pull Secret: github.com/cloud-native-toolkit/terraform-gitops-pull-secret
+- Catalog: github.com/cloud-native-toolkit/terraform-gitops-cp-catalogs
+- Cert: github.com/cloud-native-toolkit/terraform-util-sealed-secret-cert
+- Cluster: github.com/cloud-native-toolkit/terraform-ocp-login
+- CertManager: github.com/cloud-native-toolkit/terraform-gitops-ocp-cert-manager
 
 ## Example usage
 
 ```hcl-terraform
-module "dev_tools_argocd" {
-  source = "github.com/cloud-native-toolkit/terraform-tools-argocd.git"
+module "mas_manage" {
+  source = "github.com/cloud-native-toolkit/terraform-gitops-"
 
-  cluster_config_file = module.dev_cluster.config_file_path
-  cluster_type        = module.dev_cluster.type
-  app_namespace       = module.dev_cluster_namespaces.tools_namespace_name
-  ingress_subdomain   = module.dev_cluster.ingress_hostname
-  olm_namespace       = module.dev_software_olm.olm_namespace
-  operator_namespace  = module.dev_software_olm.target_namespace
-  name                = "argocd"
+  gitops_config = module.gitops.gitops_config
+  git_credentials = module.gitops.git_credentials
+  server_name = module.gitops.server_name
+  kubeseal_cert = module.gitops.sealed_secrets_cert
+  entitlement_key = module.catalog.entitlement_key
+  instanceid = "mas8"
+  appid = "manage"
+
 }
 ```
+
+References:
+
+- [DB2 Warehouse](https://www.ibm.com/docs/en/cloud-paks/cp-data/4.0?topic=services-db2-warehouse)

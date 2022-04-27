@@ -1,0 +1,8 @@
+db2wh: cp4d-db2wh
+
+license_accept: true
+license: Enterprise
+common_services_namespace: ibm-common-services
+db2wh_namespace: ibm-common-services
+db2wh_version: 4.0.2
+db2wh_channel: v1.0
