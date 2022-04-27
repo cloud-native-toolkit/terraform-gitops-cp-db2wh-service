@@ -1,4 +1,4 @@
-module "mymodule" {
+module "db2wh" {
   # depends_on = [
   #   module.gitops_ibm_catalogs,
   #   module.gitops_cp4d_operator
