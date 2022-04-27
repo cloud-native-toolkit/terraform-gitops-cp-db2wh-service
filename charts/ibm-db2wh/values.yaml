@@ -6,3 +6,4 @@ common_services_namespace: ibm-common-services
 db2wh_namespace: ibm-common-services
 db2wh_version: 4.0.2
 db2wh_channel: v1.0
+cpd_operators: cpd-operators
