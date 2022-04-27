@@ -10,8 +10,6 @@ mkdir -p $DEST_DIR
 
 ## Add logic here to put the yaml resource content in DEST_DIR
 
-find "${DEST_DIR}" -name "*"
-
 #installation based on logic here: https://github.com/IBM/cp4d-deployment
 
 # https://www.ibm.com/docs/en/cloud-paks/cp-data/4.0?topic=ccs-creating-catalog-sources-that-automatically-pull-latest-images-from-entitled-registry
@@ -96,3 +94,9 @@ spec:
     accept: true
     license: "Enterprise"
 EOL
+
+echo "${VALUES_CONTENT}" > "${DEST_DIR}/values.yaml"
+
+cat "${DEST_DIR}/values.yaml"
+
+find "${DEST_DIR}" -name "*"
