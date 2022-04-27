@@ -40,4 +40,4 @@ module "mas_manage" {
 
 References:
 
-- [DB2 Warehouse](https://www.ibm.com/docs/en/cloud-paks/cp-data/4.0?topic=services-db2-warehouse)
+- [DB2 Warehouse Knowledge Center](https://www.ibm.com/docs/en/cloud-paks/cp-data/4.0?topic=services-db2-warehouse)
