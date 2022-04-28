@@ -27,7 +27,7 @@ locals {
   }
 
   values_content = {
-    db2whoperator-services = local.dbwhoperator-services
+    db2whoperator-services = local.db2whoperator-services
   }
   layer = "services"
   type  = "base"
