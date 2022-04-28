@@ -30,6 +30,6 @@ cp -R "${CHART_DIR}"/* "${DEST_DIR}"
 
 echo "${VALUES_CONTENT}" > "${DEST_DIR}/values.yaml"
 
-cat "${DEST_DIR}/values.yaml"
-
 find "${DEST_DIR}" -name "*"
+
+

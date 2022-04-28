@@ -1,5 +1,4 @@
 db2wh: cp4d-db2wh
-
 license_accept: true
 license: Enterprise
 common_services_namespace: ibm-common-services
