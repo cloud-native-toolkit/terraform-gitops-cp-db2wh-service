@@ -6,41 +6,24 @@ locals {
   ingress_url  = "https://${local.ingress_host}"
   service_url  = "http://${local.name}.${var.namespace}"
 
-  db2whoperatorcatalog-subscription-config = {
-    apiVersion ="operators.coreos.com/v1alpha1"
-    kind ="Subscription"
-    metadata = {
-      name ="ibm-db2wh-cp4d-operator-catalog-subscription"
-      namespace = "cpd-operators"
-      spec = {
-        channel = "v1.0"
-        installPlanApproval ="Automatic"
-        name = "ibm-db2wh-cp4d-operator"
-        source = "ibm-operator-catalog"
-        sourceNamespace ="openshift-marketplace"
+  values_content = {
+    db2whoperatorcatalog-subscription-config = {
+      apiVersion ="operators.coreos.com/v1alpha1"
+      kind ="Subscription"
+      metadata = {
+        name ="ibm-db2wh-cp4d-operator-catalog-subscription"
+        namespace = "cpd-operators"
+        spec = {
+          channel = "v1.0"
+          installPlanApproval ="Automatic"
+          name = "ibm-db2wh-cp4d-operator"
+          source = "ibm-operator-catalog"
+          sourceNamespace ="openshift-marketplace"
+        }
       }
     }
   }
 
-  db2whoperator-services-config = {
-    apiVersion = "databases.cpd.ibm.com/v1"
-    kind = "Db2whService"
-      metadata = {
-        name = "db2wh-cr"   
-        namespace = "cpd-operators"  
-      spec = { 
-        license = { 
-          accept = true
-          license = "Enterprise"
-        }
-      }
-    } 
-  }
-
-  values_content = {
-    db2whoperatorcatalog-subscription = local.db2whoperatorcatalog-subscription-config
-    db2whoperator-services = local.db2whoperator-services-config
-  }
   layer = "services"
   type  = "base"
   application_branch = "main"
@@ -60,6 +43,7 @@ resource "null_resource" "create_yaml" {
     environment = {
       VALUES_CONTENT = yamlencode(local.values_content)
     }
+
   }
 }
 
