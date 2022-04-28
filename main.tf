@@ -39,7 +39,7 @@ locals {
 
   values_content = {
     db2whoperatorcatalog-subscription = local.db2whoperatorcatalog-subscription-config
-    db2whoperator-services = local.db2whoperator-services-config
+   # db2whoperator-services = local.db2whoperator-services-config
   }
   layer = "services"
   type  = "base"
@@ -58,13 +58,6 @@ resource "null_resource" "create_yaml" {
     command = "${path.module}/scripts/create-yaml.sh '${local.name}' '${local.yaml_dir}' "
 
     environment = {
-      # CS_NAMESPACE            = var.common_services_namespace
-      # STORAGE_CLASS           = var.storage_class
-      # INSTANCE_NAMESPACE      = var.namespace
-
-      # DB2_WAREHOUSE_VERSION = var.db2_warehouse_version
-      # DB2_WAREHOUSE_CHANNEL = var.db2_warehouse_channel
-
       VALUES_CONTENT = yamlencode(local.values_content)
     }
   }
