@@ -1,5 +1,5 @@
 apiVersion: v2
-name: ibm-db2wh-operator
+name: db2warehouse
 description: A Helm chart for in install the IBM Cloud Pak for Data - DB2 WH Data Service Operator
 type: application
 version: 1.0.0
