@@ -12,15 +12,15 @@ locals {
   }
 
   db2whoperator-services = {
-    apiVersion = databases.cpd.ibm.com/v1
-    kind = Db2whService
+    apiVersion = "databases.cpd.ibm.com/v1"
+    kind = "Db2whService"
       metadata = {
-        name = db2wh-cr    
-        namespace = ibm-common-services   
+        name = "db2wh-cr"   
+        namespace = "ibm-common-services"  
       spec = { 
         license = { 
           accept = true
-          license = Enterprise  
+          license = "Enterprise"
         }
       }
     } 
