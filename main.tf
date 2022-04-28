@@ -5,7 +5,29 @@ locals {
   ingress_host = "${local.name}-${var.namespace}.${var.cluster_ingress_hostname}"
   ingress_url  = "https://${local.ingress_host}"
   service_url  = "http://${local.name}.${var.namespace}"
+
+  db2whoperatorcatalog-subscription = {
+
+
+  }
+
+  db2whoperator-services = {
+    apiVersion = databases.cpd.ibm.com/v1
+    kind = Db2whService
+      metadata = {
+        name = db2wh-cr    
+        namespace = ibm-common-services   
+      spec = { 
+        license = { 
+          accept = true
+          license = Enterprise  
+        }
+      }
+    } 
+  }
+
   values_content = {
+    db2whoperator-services = local.dbwhoperator-services
   }
   layer = "services"
   type  = "base"
@@ -30,6 +52,8 @@ resource "null_resource" "create_yaml" {
 
       DB2_WAREHOUSE_VERSION = var.db2_warehouse_version
       DB2_WAREHOUSE_CHANNEL = var.db2_warehouse_channel
+
+      VALUES_CONTENT = yamlencode(local.values_content)
     }
   }
 }
