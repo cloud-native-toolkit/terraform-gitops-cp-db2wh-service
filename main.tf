@@ -39,7 +39,7 @@ locals {
 
   values_content = {
     db2whoperatorcatalog-subscription = local.db2whoperatorcatalog-subscription-config
-   # db2whoperator-services = local.db2whoperator-services-config
+    db2whoperator-services = local.db2whoperator-services-config
   }
   layer = "services"
   type  = "base"
