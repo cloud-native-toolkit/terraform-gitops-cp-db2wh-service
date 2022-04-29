@@ -23,9 +23,6 @@ cd .testrepo || exit 1
 
 find . -name "*"
 
-echo "ArgoCD config File - argocd/${LAYER}/cluster/${SERVER_NAME}/${TYPE}/${NAMESPACE}-${COMPONENT_NAME}.yaml"
-
-
 sleep 20m
 
 MAX_COUNT=30
