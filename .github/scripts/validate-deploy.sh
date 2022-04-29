@@ -23,7 +23,7 @@ cd .testrepo || exit 1
 
 find . -name "*"
 
-sleep 20m
+sleep 2m
 
 MAX_COUNT=30
 
