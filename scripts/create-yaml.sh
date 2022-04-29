@@ -22,8 +22,6 @@ echo "${DEST_DIR}"
 echo "Chart Dir"
 echo "${CHART_DIR}"
 
-
-
 mkdir -p $DEST_DIR
 
 ## Add logic here to put the yaml resource content in DEST_DIR
