@@ -6,8 +6,8 @@ GIT_REPO=$(cat git_repo)
 GIT_TOKEN=$(cat git_token)
 
 export KUBECONFIG=$(cat .kubeconfig)
-#NAMESPACE=$(cat .namespace)
-NAMESPACE = "cpd-operators"
+NAMESPACE=$(cat .namespace)
+#NAMESPACE="cpd-operators"
 BRANCH="main"
 SERVER_NAME="default"
 TYPE="base"
@@ -23,7 +23,7 @@ cd .testrepo || exit 1
 
 find . -name "*"
 
-sleep 1m
+sleep 10m
 
 MAX_COUNT=30
 
