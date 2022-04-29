@@ -23,9 +23,14 @@ cd .testrepo || exit 1
 
 find . -name "*"
 
-sleep 10m
+echo "ArgoCD config File - argocd/${LAYER}/cluster/${SERVER_NAME}/${TYPE}/${NAMESPACE}-${COMPONENT_NAME}.yaml"
+
+
+sleep 20m
 
 MAX_COUNT=30
+
+#https://github.com/cloud-native-toolkit-test/gitops-cp-db2wh/blob/main/argocd/2-services/cluster/default/base/cpd-operators-db2warehouse.yaml
 
 if [[ ! -f "argocd/${LAYER}/cluster/${SERVER_NAME}/${TYPE}/${NAMESPACE}-${COMPONENT_NAME}.yaml" ]]; then
   echo "ArgoCD config missing - argocd/${LAYER}/cluster/${SERVER_NAME}/${TYPE}/${NAMESPACE}-${COMPONENT_NAME}.yaml"
@@ -58,12 +63,12 @@ else
   sleep 30
 fi
 
-count=0
-until kubectl get CatalogSource "ibm-db2uoperator-catalog" -n "openshift-marketplace" || [[ $count -eq $MAX_COUNT ]]; do
-  echo "Waiting for CatalogSourceibm-db2uoperator-catalog in openshift-marketplace"
-  count=$((count + 1))
-  sleep 30
-done
+# count=0
+# until kubectl get CatalogSource "ibm-db2uoperator-catalog" -n "openshift-marketplace" || [[ $count -eq $MAX_COUNT ]]; do
+#   echo "Waiting for CatalogSourceibm-db2uoperator-catalog in openshift-marketplace"
+#   count=$((count + 1))
+#   sleep 30
+# done
 
 if [[ $count -eq $MAX_COUNT ]]; then
   echo "Timed out waiting for subscription/ibm-db2wh-cp4d-operator-catalog-subscription in ${NAMESPACE}"
