@@ -14,6 +14,7 @@ TYPE="base"
 LAYER="2-services"
 
 COMPONENT_NAME="db2warehouse"
+CP-NAMESPACE="cpd-operators"
 
 mkdir -p .testrepo
 
@@ -67,7 +68,7 @@ fi
 #   sleep 30
 # done
 
-CP-NAMESPACE="cpd-operators"
+
 
 if [[ $count -eq $MAX_COUNT ]]; then
   echo "Timed out waiting for subscription/ibm-db2wh-cp4d-operator-catalog-subscription in ${CP-NAMESPACE}"
