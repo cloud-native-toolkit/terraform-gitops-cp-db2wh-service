@@ -7,21 +7,14 @@ locals {
   service_url  = "http://${local.name}.${var.namespace}"
 
   values_content = {
-    db2whoperatorcatalog-subscription-config = {
-      apiVersion ="operators.coreos.com/v1alpha1"
-      kind ="Subscription"
-      metadata = {
-        name ="ibm-db2wh-cp4d-operator-catalog-subscription"
-        namespace = "cpd-operators"
-        spec = {
-          channel = "v1.0"
-          installPlanApproval ="Automatic"
-          name = "ibm-db2wh-cp4d-operator"
-          source = "ibm-operator-catalog"
-          sourceNamespace ="openshift-marketplace"
-        }
-      }
-    }
+    db2wh = "cp4d-db2wh"
+    license_accept = true
+    license = "Enterprise"
+    common_services_namespace ="ibm-common-services"
+    db2wh_namespace ="gitops-cp-db2wh"
+    db2wh_version ="4.0.2"
+    db2wh_channel="v1.0"
+    cpd_operators="cpd-operators"
   }
 
   layer = "services"
