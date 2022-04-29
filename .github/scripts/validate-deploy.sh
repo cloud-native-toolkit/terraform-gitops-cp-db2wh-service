@@ -14,7 +14,7 @@ TYPE="base"
 LAYER="2-services"
 
 COMPONENT_NAME="db2warehouse"
-CP-NAMESPACE="cpd-operators"
+CPD-NAMESPACE="cpd-operators"
 
 mkdir -p .testrepo
 
@@ -70,22 +70,22 @@ fi
 
 
 
-if [[ $count -eq $MAX_COUNT ]]; then
-  echo "Timed out waiting for subscription/ibm-db2wh-cp4d-operator-catalog-subscription in ${CP-NAMESPACE}"
-  kubectl get all -n "${CP-NAMESPACE}"
-  exit 1
-fi
+# if [[ $count -eq $MAX_COUNT ]]; then
+#   echo "Timed out waiting for subscription/ibm-db2wh-cp4d-operator-catalog-subscription in cpd-operators"
+#   kubectl get all -n "cpd-operators"
+#   exit 1
+# fi
 
 count=0
-until kubectl get subscription "ibm-db2wh-cp4d-operator-catalog-subscription" -n "${CP-NAMESPACE}" || [[ $count -eq $MAX_COUNT ]]; do
-  echo "Waiting for subscription/ibm-db2wh-cp4d-operator-catalog-subscription in ${CP-NAMESPACE}"
+until kubectl get subscription "ibm-db2wh-cp4d-operator-catalog-subscription" -n "cpd-operators" || [[ $count -eq $MAX_COUNT ]]; do
+  echo "Waiting for subscription/ibm-db2wh-cp4d-operator-catalog-subscription in cpd-operators"
   count=$((count + 1))
   sleep 30
 done
 
 if [[ $count -eq $MAX_COUNT ]]; then
-  echo "Timed out waiting for subscription/ibm-db2wh-cp4d-operator-catalog-subscription in ${CP-NAMESPACE}"
-  kubectl get all -n "${CP-NAMESPACE}"
+  echo "Timed out waiting for subscription/ibm-db2wh-cp4d-operator-catalog-subscription in cpd-operators"
+  kubectl get all -n "cpd-operators"
   exit 1
 fi
 
