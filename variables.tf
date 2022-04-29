@@ -65,7 +65,7 @@ variable "git_credentials" {
 variable "namespace" {
   type        = string
   description = "The namespace where the application should be deployed"
-  default ="cpd-operators"
+  #default ="cpd-operators"
 }
 
 variable "cluster_ingress_hostname" {
