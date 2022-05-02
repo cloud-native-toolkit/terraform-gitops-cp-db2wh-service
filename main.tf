@@ -8,14 +8,13 @@ locals {
   service_url  = "http://${local.name}.${var.namespace}"
 
   values_content = {
-    db2wh = "cp4d-db2wh"
     license_accept = true
-    license = "Enterprise"
-    common_services_namespace ="ibm-common-services"
-    db2wh_namespace ="gitops-cp-db2wh"
-    db2wh_version ="4.0.2"
-    db2wh_channel="v1.0"
-    cpd_operators="cpd-operators"
+    license = var.db2_license_type
+    common_services_namespace =var.common_services_namespace
+    db2wh_namespace =var.namespace
+    db2wh_version =var.db2_warehouse_version
+    db2wh_channel=var.db2_warehouse_channel
+    cpd_operators=var.cpd_operators
   }
 
   layer = "services"

@@ -123,3 +123,17 @@ variable "db2_warehouse_channel" {
   description = "DB2 Warehouse operator subscription channel"
   default     = "v1.0"
 }
+
+variable "db2_license_type" {
+  type        = string
+  description = "DB2 Warehouse operator license type"
+  default     = "Enterprise"
+}
+
+variable "cpd_operators" {
+  type        = string
+  description = "Namespace where cpd is deployed"
+  default     = "cpd-operators"
+}
+
+# db2wh = "cp4d-db2wh"
