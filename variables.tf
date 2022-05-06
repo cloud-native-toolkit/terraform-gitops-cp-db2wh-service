@@ -98,12 +98,28 @@ variable "server_name" {
   default     = "default"
 }
 
+variable "operator_namespace" {
+  type        = string
+  description = "CPD operator namespace"
+  default = "cpd-operators"
+}
 
+variable "cpd_namespace" {
+  type        = string
+  description = "CPD namespace"
+  default = "gitops-cp4d-instance"
+}
 
 variable "common_services_namespace" {
   type        = string
   description = "Namespace where cpd is deployed"
   default     = "ibm-common-services"
+}
+
+variable "cpd_operators" {
+  type        = string
+  description = "Namespace where cpd is deployed"
+  default     = "cpd-operators"
 }
 
 variable "storage_class" {
@@ -128,12 +144,6 @@ variable "db2_license_type" {
   type        = string
   description = "DB2 Warehouse operator license type"
   default     = "Enterprise"
-}
-
-variable "cpd_operators" {
-  type        = string
-  description = "Namespace where cpd is deployed"
-  default     = "cpd-operators"
 }
 
 # db2wh = "cp4d-db2wh"

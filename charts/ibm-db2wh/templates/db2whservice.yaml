@@ -2,9 +2,9 @@ apiVersion: databases.cpd.ibm.com/v1
 kind: Db2whService
 metadata:
   name: db2wh-cr
-  namespace: {{ .Values.cpd_operators }}
+  namespace: {{ .Values.operator_namespace }}
   annotations:
-    argocd.argoproj.io/sync-wave: "2" 
+    argocd.argoproj.io/sync-wave: "1" 
 spec:
   license:
     accept: {{ .Values.license_accept }}

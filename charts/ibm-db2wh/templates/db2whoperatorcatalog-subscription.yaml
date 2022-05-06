@@ -4,12 +4,14 @@ apiVersion: operators.coreos.com/v1alpha1
 kind: Subscription
 metadata:
   name: ibm-db2wh-cp4d-operator-catalog-subscription
-  namespace: {{ .Values.cpd_operators }}
+  namespace: {{ .Values.operator_namespace }}
   annotations:
-    argocd.argoproj.io/sync-wave: "1" 
+    argocd.argoproj.io/sync-wave: "-5" 
 spec:
   channel: {{ .Values.db2wh_channel }}
-  installPlanApproval: Automatic
   name: ibm-db2wh-cp4d-operator
+  installPlanApproval: Automatic
   source: ibm-operator-catalog
   sourceNamespace: openshift-marketplace
+
+# Need to find why they have 2 subscriptions

@@ -10,11 +10,16 @@ locals {
   values_content = {
     license_accept = true
     license = var.db2_license_type
-    common_services_namespace =var.common_services_namespace
+
     db2wh_namespace =var.namespace
     db2wh_version =var.db2_warehouse_version
     db2wh_channel=var.db2_warehouse_channel
-    cpd_operators=var.cpd_operators
+
+
+    name= "ibm-db2wh-cp4d-operator-catalog-subscription"
+    operator_namespace = var.operator_namespace
+    common_services_namespace = var.common_services_namespace
+    cpd_namespace = var.cpd_namespace
   }
 
   layer = "services"

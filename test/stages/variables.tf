@@ -110,3 +110,22 @@ variable "kubeseal_namespace" {
 variable "cp_entitlement_key" {
   default = ""
 }
+
+variable "cpd_common_services_namespace" {
+  type        = string
+  description = "Namespace for cpd commmon services"
+  default = "ibm-common-services"
+}
+
+
+variable "cpd_operator_namespace" {
+  type        = string
+  description = "Namespace for cpd commmon services"
+  default = "cpd-operators"
+}
+
+variable "cpd_namespace" {
+  type        = string
+  description = "CPD namespace"
+  default = "gitops-cp4d-instance"
+}
