@@ -4,6 +4,12 @@
 
 IBM Db2 Warehouse is an analytics data warehouse that features in-memory data processing and in-database analytics. It is client-managed and optimized for fast and flexible deployment, with automated scaling that supports analytics workloads. 
 
+Namespace used in this module
+
+- operator_namespace: cpd-operators
+- common_services_namespace: ibm-common-services
+- cpd_namespace: gitops-cp4d-instance
+
 ## Supported platforms
 
 OCP 4.8
