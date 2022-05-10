@@ -5,7 +5,7 @@ resource null_resource write_outputs {
     environment = {
       OUTPUT = jsonencode({
         name        = module.db2wh.name
-        inst_name   = module.db2wh.inst_name
+        #inst_name   = module.db2wh.inst_name
         # sub_chart   = module.db2wh.sub_chart
         # sub_name   = module.db2wh.sub_name 
         # operator_namespace = module.db2wh.operator_namespace
