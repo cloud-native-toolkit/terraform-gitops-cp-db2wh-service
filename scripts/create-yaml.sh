@@ -1,11 +1,14 @@
 #!/usr/bin/env bash
 
-SCRIPT_DIR=$(cd $(dirname "$0"); pwd -P)
-MODULE_DIR=$(cd "${SCRIPT_DIR}/.."; pwd -P)
-CHART_DIR=$(cd "${MODULE_DIR}/charts/ibm-db2wh"; pwd -P)
-
 NAME="$1"
 DEST_DIR="$2"
+
+SCRIPT_DIR=$(cd $(dirname "$0"); pwd -P)
+MODULE_DIR=$(cd "${SCRIPT_DIR}/.."; pwd -P)
+# CHART_DIR=$(cd "${MODULE_DIR}/charts/ibm-db2wh"; pwd -P)
+
+# added support for db2wh subscription / instance 
+CHART_DIR=$(cd "${MODULE_DIR}/charts/${NAME}"; pwd -P)
 
 echo "Name Print"
 echo "${NAME}"

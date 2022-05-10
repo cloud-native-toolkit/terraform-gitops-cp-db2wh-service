@@ -1,13 +1,28 @@
 locals {
-  name         = "db2warehouse"
+  name         = "ibm-cpd-db2wh-instance"
+  subscription_name  = "ibm-cpd-db2wh-subscription"
   bin_dir      = module.setup_clis.bin_dir
+
+  subscription_yaml_dir = "${path.cwd}/.tmp/${local.name}/chart/${local.subscription_name}"
+  instance_yaml_dir = "${path.cwd}/.tmp/${local.name}/chart/${local.name}"
+
   yaml_dir     = "${path.cwd}/.tmp/${local.name}/chart/${local.name}"
   chart_dir    = "${path.module}/charts/ibm-db2wh"
+
   ingress_host = "${local.name}-${var.namespace}.${var.cluster_ingress_hostname}"
   ingress_url  = "https://${local.ingress_host}"
   service_url  = "http://${local.name}.${var.namespace}"
 
-  values_content = {
+  sa_name       = "ibm-db2-ibm-db2"
+  
+  layer = "services"
+  operator_type  = "operators"
+  type  = "instances"
+  application_branch = "main"
+  namespace = var.namespace
+  layer_config = var.gitops_config[local.layer]
+
+  subscription_content = {
     license_accept = true
     license = var.db2_license_type
 
@@ -22,31 +37,65 @@ locals {
     cpd_namespace = var.cpd_namespace
   }
 
-  layer = "services"
-  type  = "base"
-  application_branch = "main"
-  namespace = var.namespace
-  layer_config       = var.gitops_config[local.layer]
+  instance_content = {
+    name = "db2wh-cr"
+    cpd_namespace = var.cpd_namespace
+    spec = {
+      license = {
+        accept = "true"
+        license = var.license 
+        }      
+      }               
+    }
+
 }
 
 module "setup_clis" {
   source = "github.com/cloud-native-toolkit/terraform-util-clis.git"
 }
 
-
-resource "null_resource" "create_yaml" {
+resource "null_resource" "create_subcription_yaml" {
   provisioner "local-exec" {
-    command = "${path.module}/scripts/create-yaml.sh '${local.name}' '${local.yaml_dir}' "
+    command = "${path.module}/scripts/create-yaml.sh '${local.subscription_name}' '${local.subscription_yaml_dir}'"
 
     environment = {
-      VALUES_CONTENT = yamlencode(local.values_content)
+      VALUES_CONTENT = yamlencode(local.subscription_content)
     }
 
   }
 }
 
-resource "null_resource" "debug_yamls" {
-  depends_on = [null_resource.create_yaml]
+module setup_service_account {
+  source = "github.com/cloud-native-toolkit/terraform-gitops-service-account.git"
+
+  gitops_config = var.gitops_config
+  git_credentials = var.git_credentials
+  namespace = local.namespace
+  name = "db2wh-operandreg-sa"
+  server_name = var.server_name  
+}
+
+module setup_rbac {
+  source = "github.com/cloud-native-toolkit/terraform-gitops-rbac.git?ref=v1.7.1"
+
+  gitops_config             = var.gitops_config
+  git_credentials           = var.git_credentials
+  service_account_namespace = local.namespace
+  service_account_name      = "db2wh-operandreg-sa"
+  namespace                 = var.common_services_namespace
+  rules                     = [
+    {
+      apiGroups = ["operator.ibm.com"]
+      resources = ["operandregistries"]
+      verbs = ["get", "apply", "list", "patch"]
+    }
+  ]
+  server_name               = var.server_name
+  cluster_scope             = true
+}
+
+/* resource "null_resource" "debug_yamls" {
+  depends_on = [null_resource.create_subcription_yaml]
 
   triggers = {
     always_run = timestamp()
@@ -59,18 +108,18 @@ resource "null_resource" "debug_yamls" {
       BIN_DIR = local.bin_dir
     }
   }
-}
+} */
 
-resource "null_resource" "setup_gitops" {
-  depends_on = [null_resource.create_yaml, null_resource.debug_yamls]
+resource null_resource setup_gitops_subscription {
+  depends_on = [null_resource.create_subcription_yaml]
 
   triggers = {
-    name = local.name
+    name = local.subscription_name
     namespace = var.namespace
-    yaml_dir = local.yaml_dir
+    yaml_dir = local.subscription_yaml_dir
     server_name = var.server_name
     layer = local.layer
-    type = local.type
+    type = local.operator_type
     git_credentials = yamlencode(var.git_credentials)
     gitops_config   = yamlencode(var.gitops_config)
     bin_dir = local.bin_dir
@@ -80,8 +129,8 @@ resource "null_resource" "setup_gitops" {
     command = "${self.triggers.bin_dir}/igc gitops-module '${self.triggers.name}' -n '${self.triggers.namespace}' --contentDir '${self.triggers.yaml_dir}' --serverName '${self.triggers.server_name}' -l '${self.triggers.layer}' --type '${self.triggers.type}'"
 
     environment = {
-      GIT_CREDENTIALS = yamlencode(var.git_credentials)
-      GITOPS_CONFIG   = yamlencode(var.gitops_config)
+      GIT_CREDENTIALS = nonsensitive(self.triggers.git_credentials)
+      GITOPS_CONFIG   = self.triggers.gitops_config
     }
   }
 

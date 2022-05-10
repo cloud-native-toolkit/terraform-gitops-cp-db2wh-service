@@ -98,6 +98,18 @@ variable "server_name" {
   default     = "default"
 }
 
+variable "subscription_source_namespace" {
+  type        = string
+  description = "The namespace where the catalog has been deployed"
+  default     = "openshift-marketplace"
+}
+
+variable "channel" {
+  type        = string
+  description = "The channel that should be used to deploy the operator"
+  default     = "v1.0"
+}
+
 variable "operator_namespace" {
   type        = string
   description = "CPD operator namespace"

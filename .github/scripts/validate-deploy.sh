@@ -1,20 +1,18 @@
 #!/usr/bin/env bash
 
-echo "Validate Deploy file started printing.."
-
 GIT_REPO=$(cat git_repo)
 GIT_TOKEN=$(cat git_token)
 
 export KUBECONFIG=$(cat .kubeconfig)
 NAMESPACE=$(cat .namespace)
-#NAMESPACE="cpd-operators"
-BRANCH="main"
-SERVER_NAME="default"
-TYPE="base"
-LAYER="2-services"
-
-COMPONENT_NAME="db2warehouse"
-CPD-NAMESPACE="cpd-operators"
+COMPONENT_NAME=$(jq -r '.name // "my-module"' gitops-output.json)
+SUBSCRIPTION_NAME=$(jq -r '.sub_name // "sub_name"' gitops-output.json)
+OPERATOR_NAMESPACE=$(jq -r '.operator_namespace // "operator_namespace"' gitops-output.json)
+CPD_NAMESPACE=$(jq -r '.cpd_namespace // "cpd_namespace"' gitops-output.json)
+BRANCH=$(jq -r '.branch // "main"' gitops-output.json)
+SERVER_NAME=$(jq -r '.server_name // "default"' gitops-output.json)
+LAYER=$(jq -r '.layer_dir // "2-services"' gitops-output.json)
+TYPE=$(jq -r '.type // "base"' gitops-output.json)
 
 mkdir -p .testrepo
 
@@ -23,12 +21,6 @@ git clone https://${GIT_TOKEN}@${GIT_REPO} .testrepo
 cd .testrepo || exit 1
 
 find . -name "*"
-
-sleep 12m
-
-MAX_COUNT=30
-
-#https://github.com/cloud-native-toolkit-test/gitops-cp-db2wh/blob/main/argocd/2-services/cluster/default/base/cpd-operators-db2warehouse.yaml
 
 if [[ ! -f "argocd/${LAYER}/cluster/${SERVER_NAME}/${TYPE}/${NAMESPACE}-${COMPONENT_NAME}.yaml" ]]; then
   echo "ArgoCD config missing - argocd/${LAYER}/cluster/${SERVER_NAME}/${TYPE}/${NAMESPACE}-${COMPONENT_NAME}.yaml"
@@ -39,7 +31,7 @@ echo "Printing argocd/${LAYER}/cluster/${SERVER_NAME}/${TYPE}/${NAMESPACE}-${COM
 cat "argocd/${LAYER}/cluster/${SERVER_NAME}/${TYPE}/${NAMESPACE}-${COMPONENT_NAME}.yaml"
 
 if [[ ! -f "payload/${LAYER}/namespace/${NAMESPACE}/${COMPONENT_NAME}/values.yaml" ]]; then
-  echo "Application values not found - payload/2-services/namespace/${NAMESPACE}/${COMPONENT_NAME}/values.yaml"
+  echo "Application values not found - payload/${LAYER}/namespace/${NAMESPACE}/${COMPONENT_NAME}/values.yaml"
   exit 1
 fi
 
@@ -47,13 +39,13 @@ echo "Printing payload/${LAYER}/namespace/${NAMESPACE}/${COMPONENT_NAME}/values.
 cat "payload/${LAYER}/namespace/${NAMESPACE}/${COMPONENT_NAME}/values.yaml"
 
 count=0
-until kubectl get namespace "${NAMESPACE}" 1> /dev/null 2> /dev/null || [[ $count -eq $MAX_COUNT ]]; do
+until kubectl get namespace "${NAMESPACE}" 1>/dev/null 2>/dev/null || [[ $count -eq 20 ]]; do
   echo "Waiting for namespace: ${NAMESPACE}"
   count=$((count + 1))
   sleep 15
 done
 
-if [[ $count -eq $MAX_COUNT ]]; then
+if [[ $count -eq 20 ]]; then
   echo "Timed out waiting for namespace: ${NAMESPACE}"
   exit 1
 else
@@ -61,38 +53,40 @@ else
   sleep 30
 fi
 
-# count=0
-# until kubectl get CatalogSource "ibm-db2uoperator-catalog" -n "openshift-marketplace" || [[ $count -eq $MAX_COUNT ]]; do
-#   echo "Waiting for CatalogSourceibm-db2uoperator-catalog in openshift-marketplace"
-#   count=$((count + 1))
+#temporary cleanup
+oc delete job db2wh-operandreg-job -n gitops-cp-db2wh
+
+echo "OPERATOR_NAMESPACE ***** "${OPERATOR_NAMESPACE}""
+echo "SUBSCRIPTION_NAME *****"${SUBSCRIPTION_NAME}""
+sleep 30
+
+CSV=$(kubectl get sub -n "${OPERATOR_NAMESPACE}" "${SUBSCRIPTION_NAME}" -o jsonpath='{.status.installedCSV} {"\n"}')
+echo "CSV ***** "${CSV}""
+SUB_STATUS=0
+while [[ $SUB_STATUS -ne 1 ]]; do
+  sleep 10
+  SUB_STATUS=$(kubectl get deployments -n "${OPERATOR_NAMESPACE}" -l olm.owner="${CSV}" -o jsonpath="{.items[0].status.availableReplicas} {'\n'}")
+  echo "SUB_STATUS ${SUB_STATUS} **** Waiting for subscription/${SUBSCRIPTION_NAME} in ${OPERATOR_NAMESPACE}"
+done
+
+echo "DB2WH  Operator is READY"
+
+# echo "CPD_NAMESPACE *****"${CPD_NAMESPACE}""
+# sleep 60
+# INSTANCE_STATUS=""
+
+# while [ true ]; do
+#   INSTANCE_STATUS=$(kubectl get Db2whService db2wh-cr -n "${CPD_NAMESPACE}" -o jsonpath='{.status.db2whStatus} {"\n"}')
+#   echo "Waiting for instance "${INSTANCE_NAME}" to be ready. Current status : "${INSTANCE_STATUS}""
+#   if [ $INSTANCE_STATUS == "Completed" ]; then
+#     break
+#   fi
 #   sleep 30
 # done
 
-
-
-# if [[ $count -eq $MAX_COUNT ]]; then
-#   echo "Timed out waiting for subscription/ibm-db2wh-cp4d-operator-catalog-subscription in cpd-operators"
-#   kubectl get all -n "cpd-operators"
-#   exit 1
-# fi
-
-count=0
-until kubectl get subscription "ibm-db2wh-cp4d-operator-catalog-subscription" -n "cpd-operators" || [[ $count -eq $MAX_COUNT ]]; do
-  echo "Waiting for subscription/ibm-db2wh-cp4d-operator-catalog-subscription in cpd-operators"
-  count=$((count + 1))
-  sleep 30
-done
-
-if [[ $count -eq $MAX_COUNT ]]; then
-  echo "Timed out waiting for subscription/ibm-db2wh-cp4d-operator-catalog-subscription in cpd-operators"
-  kubectl get all -n "cpd-operators"
-  exit 1
-fi
-
-#db2wh-cr
-
-#debugging pause for 10 mins
-sleep 600
+# echo "DB2 Db2whService/db2wh-cr is ${INSTANCE_STATUS}"
 
 cd ..
-#rm -rf .testrepo
+rm -rf .testrepo
+
+
