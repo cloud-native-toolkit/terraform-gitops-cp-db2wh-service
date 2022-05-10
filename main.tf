@@ -24,7 +24,7 @@ locals {
 
   subscription_content = {
     license_accept = true
-    license = var.db2_license_type
+    license = var.license
 
     db2wh_namespace =var.namespace
     db2wh_version =var.db2_warehouse_version
