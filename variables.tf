@@ -152,9 +152,9 @@ variable "db2_warehouse_channel" {
   default     = "v1.0"
 }
 
-variable "db2_license_type" {
+variable "license" {
   type        = string
-  description = "DB2 Warehouse operator license type"
+  description = "License type"
   default     = "Enterprise"
 }
 
