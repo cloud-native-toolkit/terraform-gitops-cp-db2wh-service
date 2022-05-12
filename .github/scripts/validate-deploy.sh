@@ -53,9 +53,6 @@ else
   sleep 30
 fi
 
-#temporary cleanup
-oc delete job db2wh-operandreg-job -n gitops-cp-db2wh
-
 echo "OPERATOR_NAMESPACE ***** "${OPERATOR_NAMESPACE}""
 echo "SUBSCRIPTION_NAME *****"${SUBSCRIPTION_NAME}""
 sleep 30
@@ -71,7 +68,7 @@ done
 
 echo "DB2WH  Operator is READY"
 
-# echo "CPD_NAMESPACE *****"${CPD_NAMESPACE}""
+echo "CPD_NAMESPACE *****"${CPD_NAMESPACE}""
 # sleep 60
 # INSTANCE_STATUS=""
 
