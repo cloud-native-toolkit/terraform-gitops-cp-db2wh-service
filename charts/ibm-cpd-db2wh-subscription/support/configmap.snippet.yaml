@@ -1,8 +1,0 @@
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: db2wh-db2uoperator-request
-  labels:
-    app: db2whconfig
-  annotations:
-    argocd.argoproj.io/sync-wave: "-15"
