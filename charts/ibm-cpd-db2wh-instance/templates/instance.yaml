@@ -3,8 +3,6 @@ kind: Db2whService
 metadata:
   name: {{ .Values.name }}
   namespace: {{ .Values.cpd_namespace }}
-  annotations:
-    argocd.argoproj.io/sync-wave: "1" 
 spec:
   license:
     accept: {{ .Values.license_accept }}
