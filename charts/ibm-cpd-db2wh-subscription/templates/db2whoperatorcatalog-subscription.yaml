@@ -14,4 +14,3 @@ spec:
   source: ibm-operator-catalog
   sourceNamespace: openshift-marketplace
 
-# Need to find why they have 2 subscriptions

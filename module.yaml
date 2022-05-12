@@ -19,7 +19,7 @@ versions:
           - source: github.com/cloud-native-toolkit/terraform-gitops-namespace.git
             version: ">= 1.0.0"
       - id: gitops-cp4d-instance
-         refs:
+        refs:
            - source: github.com/cloud-native-toolkit/terraform-gitops-cp4d-instance.git
              version: ">= 0.0.1"  
     variables:
