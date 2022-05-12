@@ -2,11 +2,11 @@ apiVersion: databases.cpd.ibm.com/v1
 kind: Db2whService
 metadata:
   name: {{ .Values.name }}
-  namespace: {{ .Values.cpd_namespace }}
+  namespace: gitops-cp4d-instance
   annotations:
     argocd.argoproj.io/sync-wave: "1" 
 spec:
   license:
-    accept: {{ .Values.license_accept }}
-    license: {{ .Values.license }}
+    accept: true
+    license: Enterprise
   db_type: db2wh
