@@ -1,8 +1,10 @@
 name: db2wh-cr
 cpd_namespace: gitops-cp4d-instance
+operator_namespace: cpd-operators
 
 license_accept: true
 license: Enterprise
 
+db_type: db2wh
 
 

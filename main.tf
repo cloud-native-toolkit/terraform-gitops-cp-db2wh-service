@@ -40,11 +40,13 @@ locals {
   instance_content = {
     name = "db2wh-cr"
     cpd_namespace = var.cpd_namespace
+    operator_namespace = var.operator_namespace
     spec = {
       license = {
         accept = "true"
         license = var.license 
-        }      
+        } 
+      db_type = "db2wh" 
       }               
     }
 
