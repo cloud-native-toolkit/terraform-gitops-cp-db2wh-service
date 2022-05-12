@@ -6,7 +6,7 @@ metadata:
   name: ibm-db2wh-cp4d-operator-catalog-subscription
   namespace: {{ .Values.operator_namespace }}
   annotations:
-    argocd.argoproj.io/sync-wave: "1" 
+    argocd.argoproj.io/sync-wave: "-5" 
 spec:
   channel: {{ .Values.db2wh_channel }}
   name: ibm-db2wh-cp4d-operator
