@@ -69,19 +69,19 @@ done
 echo "DB2WH  Operator is READY"
 
 echo "CPD_NAMESPACE *****"${CPD_NAMESPACE}""
-# sleep 60
-# INSTANCE_STATUS=""
+sleep 60
+INSTANCE_STATUS=""
 
-# while [ true ]; do
-#   INSTANCE_STATUS=$(kubectl get Db2whService db2wh-cr -n "${CPD_NAMESPACE}" -o jsonpath='{.status.db2whStatus} {"\n"}')
-#   echo "Waiting for instance "${INSTANCE_NAME}" to be ready. Current status : "${INSTANCE_STATUS}""
-#   if [ $INSTANCE_STATUS == "Completed" ]; then
-#     break
-#   fi
-#   sleep 30
-# done
+ while [ true ]; do
+   INSTANCE_STATUS=$(kubectl get Db2whService db2wh-cr -n "${CPD_NAMESPACE}" -o jsonpath='{.status.db2whStatus} {"\n"}')
+   echo "Waiting for instance "${INSTANCE_NAME}" to be ready. Current status : "${INSTANCE_STATUS}""
+   if [ $INSTANCE_STATUS == "Completed" ]; then
+     break
+   fi
+   sleep 30
+ done
 
-# echo "DB2 Db2whService/db2wh-cr is ${INSTANCE_STATUS}"
+echo "DB2 Db2whService/db2wh-cr is ${INSTANCE_STATUS}"
 
 cd ..
 rm -rf .testrepo
