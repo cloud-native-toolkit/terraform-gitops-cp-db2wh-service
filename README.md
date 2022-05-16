@@ -9,6 +9,7 @@ Namespace used in this module
 - operator_namespace: cpd-operators
 - common_services_namespace: ibm-common-services
 - cpd_namespace: gitops-cp4d-instance
+  
 
 ## Supported platforms
 
