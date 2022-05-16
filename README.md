@@ -11,6 +11,8 @@ Namespace used in this module
 - cpd_namespace: gitops-cp4d-instance
   
 
+  
+
 ## Supported platforms
 
 OCP 4.8
