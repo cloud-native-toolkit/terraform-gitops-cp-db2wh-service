@@ -92,7 +92,6 @@ echo "DB2 Operator uninstall"
 
 oc delete csv ${CSV} -n ${OPERATOR_NAMESPACE}
 
-
 cd ..
 rm -rf .testrepo
 
