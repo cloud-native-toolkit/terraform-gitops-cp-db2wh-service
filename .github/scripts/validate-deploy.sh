@@ -88,9 +88,9 @@ sleep 10m
 
 echo "DB2 Operator uninstall"
 
-oc delete Db2whService db2wh-cr -n ${CPD_NAMESPACE}
+#oc delete Db2whService db2wh-cr -n ${CPD_NAMESPACE}
 
-oc delete csv ${SUBSCRIPTION_NAME} -n ${OPERATOR_NAMESPACE}
+oc delete csv ${CSV} -n ${OPERATOR_NAMESPACE}
 
 
 cd ..
