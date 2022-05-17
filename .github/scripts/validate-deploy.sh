@@ -98,6 +98,8 @@ oc delete csv ${SUBSCRIPTION_NAME} -n ${OPERATOR_NAMESPACE}
 
 oc delete Db2whService db2wh-cr -n ${CPD_NAMESPACE}
 
+oc get all -l "app.kubernetes.io/name in (preinstall, rbac, shared-components, zen-integration, zenhelper)" -n ${CPD_NAMESPACE}
+
 cd ..
 rm -rf .testrepo
 
