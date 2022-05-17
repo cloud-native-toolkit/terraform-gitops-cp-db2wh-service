@@ -83,7 +83,15 @@ INSTANCE_STATUS=""
 
 echo "DB2 Db2whService/db2wh-cr is ${INSTANCE_STATUS}"
 
+
 sleep 10m
+
+echo "DB2 Operator uninstall"
+
+oc delete Db2whService db2wh-cr -n ${CPD_NAMESPACE}
+
+oc delete csv ${SUBSCRIPTION_NAME} -n ${OPERATOR_NAMESPACE}
+
 
 cd ..
 rm -rf .testrepo
