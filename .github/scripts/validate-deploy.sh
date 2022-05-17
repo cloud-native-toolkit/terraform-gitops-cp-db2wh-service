@@ -83,6 +83,8 @@ INSTANCE_STATUS=""
 
 echo "DB2 Db2whService/db2wh-cr is ${INSTANCE_STATUS}"
 
+sleep 10m
+
 cd ..
 rm -rf .testrepo
 
