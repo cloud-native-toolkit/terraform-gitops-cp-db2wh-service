@@ -77,6 +77,8 @@ INSTANCE_STATUS=""
     echo "Waiting for instance "${INSTANCE_NAME}" to be ready. Current status : "${INSTANCE_STATUS}""
     if [ $INSTANCE_STATUS == "Completed" ]; then
       break
+    elif [ $INSTANCE_STATUS == "" ]; then
+      break
     fi
     sleep 30
   done
