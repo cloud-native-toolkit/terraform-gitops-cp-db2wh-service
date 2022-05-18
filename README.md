@@ -7,12 +7,14 @@ IBM Db2 Warehouse is an analytics data warehouse that features in-memory data pr
 Namespace used in this module
 
 - operator_namespace: cpd-operators
+  CP4D Platform operator, DB2WH Operator will be installed on cpd-operators
+
 - common_services_namespace: ibm-common-services
+   CP4D foundational services, Operand Deployment Lifecycle manager Operator and IBM zen service will be installed on the ibm-common-service namespace. 
+
 - cpd_namespace: gitops-cp4d-instance
+  DB2WH instance will be installed on gitops-cp4d-instance
   
-
-  
-
 ## Supported platforms
 
 OCP 4.8
@@ -47,7 +49,25 @@ module "mas_manage" {
 }
 ```
 
+### DB2WH Pre-Req
 
-References:
+- Make sure the CP4D Instance is deployed successfully
+- Make sure the global pull secret is applied and worker nodes are replaced.
+
+### DB2WH Service check
+
+Run this CLI and check if the DB2WHService completed.
+
+oc project gitops-cp4d-instance
+
+oc get Db2whService db2wh-cr -o jsonpath='{.status.db2whStatus} {"\n"}'
+
+### DB2WH Service (instance) removal - Finalizer
+
+Run this CLI and remove the finalizer value from the YAML as sometimes DB2WH service got stuck
+
+```oc edit db2whservice db2wh-cr -n gitops-cp4d-instance```
+
+## References:
 
 - [DB2 Warehouse Knowledge Center](https://www.ibm.com/docs/en/cloud-paks/cp-data/4.0?topic=services-db2-warehouse)
