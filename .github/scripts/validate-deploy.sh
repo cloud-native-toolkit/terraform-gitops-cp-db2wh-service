@@ -93,7 +93,8 @@ echo "DB2 Operator uninstall"
 
 oc delete csv ${CSV} -n ${OPERATOR_NAMESPACE}
 
-oc delete Db2whService db2wh-cr -n ${CPD_NAMESPACE}
+# Need to revisit and remove the finalizer from db2whservice
+#oc delete Db2whService db2wh-cr -n ${CPD_NAMESPACE}
 
 #oc get all -l "app.kubernetes.io/name in (preinstall, rbac, shared-components, zen-integration, zenhelper)" -n ${CPD_NAMESPACE}
 
