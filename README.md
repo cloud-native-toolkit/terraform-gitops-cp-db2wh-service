@@ -56,9 +56,9 @@ The module itself requires some information from the cluster and needs a namespa
 
 Run this CLI and check if the DB2WHService completed.
 
-oc project gitops-cp4d-instance
+- oc project gitops-cp4d-instance
 
-oc get Db2whService db2wh-cr -o jsonpath='{.status.db2whStatus} {"\n"}'
+- oc get Db2whService db2wh-cr -o jsonpath='{.status.db2whStatus} {"\n"}'
 
 ### DB2WH Service (instance) removal - Finalizer
 
