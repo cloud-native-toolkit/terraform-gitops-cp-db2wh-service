@@ -15,7 +15,7 @@ TEMPLATE_DIR=$(
 
 cat "${SUPPORT_DIR}/configmap.snippet.yaml" > "${TEMPLATE_DIR}/configmap.yaml"
 
-oc create configmap db2oltp-operandreg-cm \
+oc create configmap db2wh-operandreg-cm \
   --from-file="${SCRIPT_DIR}"/update_operandregistry.sh \
   --dry-run=client \
   -o yaml |
