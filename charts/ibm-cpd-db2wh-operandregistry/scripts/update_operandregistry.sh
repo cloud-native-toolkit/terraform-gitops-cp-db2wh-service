@@ -2,7 +2,13 @@
 
 ZEN_OPERATORS_NAMESPACE="${ZEN_OPERATORS_NAMESPACE}"
 COMMON_SERVICES_NAMESPACE="${COMMON_SERVICES_NAMESPACE}"
-SOURCE_NAME="ibm-operator-catalog"
+
+#Need to validate if base CP4D got changed
+#https://www.ibm.com/docs/en/cloud-paks/cp-data/4.0?topic=tasks-creating-operator-subscriptions#preinstall-operator-subscriptions__svc-subcriptions
+SOURCE_NAME="ibm-db2uoperator-catalog"
+
+echo "ZEN Operator namespace"
+echo $ZEN_OPERATORS_NAMESPACE
 
 oc get operandregistry common-service -n ${COMMON_SERVICES_NAMESPACE} -o json > /temp/operandregistry.json
 
