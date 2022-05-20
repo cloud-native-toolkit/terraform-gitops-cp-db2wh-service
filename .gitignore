@@ -1,2 +1,14 @@
 .idea/
 *.iml
+
+.DS_store
+
+
+.terraform
+*.tfstate*
+/test/stages/module
+
+.tmp
+.kube
+bin2
+test/stages/gitops

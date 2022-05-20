@@ -1,0 +1,41 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: db2wh-operandreg-job
+  annotations:
+    argocd.argoproj.io/sync-wave: "-10"
+spec:
+  parallelism: 1
+  completions: 1
+  activeDeadlineSeconds: 3600
+  backoffLimit: 2
+  template:
+    metadata:
+      name: db2wh-operandreg-pod
+    spec:
+      volumes:
+      - configMap:
+          defaultMode: 0777
+          name: db2wh-operandreg-cm
+        name: db2wh-operandreg-cm
+      - name: temp
+        emptyDir: {}
+      restartPolicy: Never
+      serviceAccountName: db2wh-operandreg-sa
+      containers:
+      - name: db2wh-operandreg-pod
+        image: quay.io/ibmgaragecloud/cli-tools
+        volumeMounts:
+          - mountPath: /scripts
+            name: db2wh-operandreg-cm
+          - name: temp
+            mountPath: /temp
+        command:
+          - /bin/sh
+        args:
+          - /scripts/update_operandregistry.sh 
+        env:
+          - name: COMMON_SERVICES_NAMESPACE
+            value: {{ .Values.common_services_namespace }}
+          - name: ZEN_OPERATORS_NAMESPACE
+            value: {{ .Values.operator_namespace }}

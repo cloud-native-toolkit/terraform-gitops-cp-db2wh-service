@@ -1,4 +1,3 @@
-
 # Resource Group Variables
 variable "resource_group_name" {
   type        = string
@@ -15,6 +14,15 @@ variable "region" {
   description = "Region for VLANs defined in private_vlan_number and public_vlan_number."
 }
 
+variable "server_url" {
+  type        = string
+}
+
+variable "bootstrap_prefix" {
+  type = string
+  default = ""
+}
+
 variable "namespace" {
   type        = string
   description = "Namespace for tools"
@@ -26,9 +34,25 @@ variable "cluster_name" {
   default     = ""
 }
 
+
+
+variable "workers" {
+  type        = number
+  description = "Number of worker nodes"
+  default     = 3
+}
+
+variable "subnets" {
+  type        = number
+  description = "Number of subnets"
+  default     = 1
+}
+
+
 variable "cluster_type" {
   type        = string
   description = "The type of cluster that should be created (openshift or kubernetes)"
+  default     = "openshift"
 }
 
 variable "cluster_exists" {
@@ -55,8 +79,8 @@ variable "git_token" {
 }
 
 variable "git_host" {
-  type        = string
-  default     = "github.com"
+  type    = string
+  default = "github.com"
 }
 
 variable "git_type" {
@@ -76,4 +100,32 @@ variable "gitops_namespace" {
 }
 
 variable "git_username" {
+}
+
+variable "kubeseal_namespace" {
+  default = "sealed-secrets"
+}
+
+
+variable "cp_entitlement_key" {
+  default = ""
+}
+
+variable "cpd_common_services_namespace" {
+  type        = string
+  description = "Namespace for cpd commmon services"
+  default = "ibm-common-services"
+}
+
+
+variable "cpd_operator_namespace" {
+  type        = string
+  description = "Namespace for cpd commmon services"
+  default = "cpd-operators"
+}
+
+variable "cpd_namespace" {
+  type        = string
+  description = "CPD namespace"
+  default = "gitops-cp4d-instance"
 }
