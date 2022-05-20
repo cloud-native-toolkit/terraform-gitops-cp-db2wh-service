@@ -5,22 +5,11 @@
 - Make sure the CP4D Instance is deployed successfully
 - Make sure the global pull secret is applied and worker nodes are replaced.
 
-## Module dependencies
-
-This module makes use of the output from other modules:
-
-- GitOps - github.com/cloud-native-toolkit/terraform-tools-gitops.git
-- Namespace - github.com/cloud-native-toolkit/terraform-gitops-namespace.git
-- gitops_ibm_catalogs - github.com/cloud-native-toolkit/terraform-gitops-cp-catalogs.git
-- gitops_cp_foundation - github.com/cloud-native-toolkit/terraform-gitops-cp-foundational-services.git
-- gitops_cp4d_operator - github.com/cloud-native-toolkit/terraform-gitops-cp4d-operator.git
-- gitops-cp4d-instance - github.com/cloud-native-toolkit/terraform-gitops-cp4d-instance.git
-
 ## Db2 Warehouse on Cloud Pak for Data
 
 IBM Db2 Warehouse is an analytics data warehouse that features in-memory data processing and in-database analytics. It is client-managed and optimized for fast and flexible deployment, with automated scaling that supports analytics workloads. 
 
-Namespace used in this module
+3 Namespace(s) are used in this module to support special installation
 
 - operator_namespace: cpd-operators
   CP4D Platform operator, DB2WH Operator will be installed on cpd-operators
@@ -31,7 +20,7 @@ Namespace used in this module
 - cpd_namespace: gitops-cp4d-instance
   DB2WH instance will be installed on gitops-cp4d-instance
 
-# Cloud Pak for Data, Db2WH Subscription and Db2WHService instance gitops module
+## Cloud Pak for Data, Db2WH Subscription and Db2WHService instance gitops module
 
 Module to provision a gitops repo with the resources necessary to provision a Cloud Pak for data,ibm-db2WH-cp4d-operator Subscription and Db2WHService instance on a cluster. In order to provision Subscription and the instance, the following steps are performed:
 
@@ -40,6 +29,16 @@ Module to provision a gitops repo with the resources necessary to provision a Cl
 
 Unit tests is expected to be executed on a cluster that already has CP4D-instance and its dependencies installed and configured.
   
+## Module dependencies
+
+This module makes use of the output from other modules:
+
+- GitOps - github.com/cloud-native-toolkit/terraform-tools-gitops.git
+- Namespace - github.com/cloud-native-toolkit/terraform-gitops-namespace.git
+- gitops_ibm_catalogs - github.com/cloud-native-toolkit/terraform-gitops-cp-catalogs.git
+- gitops_cp_foundation - github.com/cloud-native-toolkit/terraform-gitops-cp-foundational-services.git
+- gitops_cp4d_operator - github.com/cloud-native-toolkit/terraform-gitops-cp4d-operator.git
+- gitops-cp4d-instance - github.com/cloud-native-toolkit/terraform-gitops-cp4d-instance.git
 
 ## Suggested companion modules
 
