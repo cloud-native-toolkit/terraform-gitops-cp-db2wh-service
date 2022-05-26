@@ -71,7 +71,7 @@ Run this CLI and check if the DB2WHService completed.
 
 - oc get Db2whService db2wh-cr -o jsonpath='{.status.db2whStatus} {"\n"}'
   
-Db2 Warehouse is ready when the command returns Completed
+Db2 Warehouse is ready when the command returns "Completed".
 
 ### DB2WH Service (instance) removal - Finalizer
 
