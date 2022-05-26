@@ -31,7 +31,6 @@ IBM Db2 Warehouse is an analytics data warehouse that features in-memory data pr
 
 Module to provision a gitops repo with the resources necessary to provision a Cloud Pak for data,ibm-db2WH-cp4d-operator Subscription and Db2WHService instance on a cluster. In order to provision Subscription and the instance, the following steps are performed:
 
-
 1. As we are using the Specialized installations architecture(where the IBM Cloud Pak foundational services operators and Cloud Pak for Data operators are in separate OpenShift projects), we must edit the IBM Cloud Pak foundational services operand registry to point to the project where the Cloud Pak for Data operators are installed: 
   - Edit the IBM Cloud Pak foundational services operand registry
   - Change the value of the namespace entry for the ibm-db2u-operator. Specify the OpenShift project where the Cloud Pak for Data operators are installed, for example, cpd-operators:
