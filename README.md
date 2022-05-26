@@ -73,7 +73,6 @@ Run this CLI and check if the DB2WHService completed.
   
 Db2 Warehouse is ready when the command returns Completed
 
-
 ### DB2WH Service (instance) removal - Finalizer
 
 Run this CLI and remove the finalizer value from the YAML as sometimes DB2WH service getting stuck.
@@ -82,8 +81,10 @@ Run this CLI and remove the finalizer value from the YAML as sometimes DB2WH ser
 
 ## Supported platforms
 
-OCP 4.8
+OCP 4.8.36
 
 ## References:
 
 - [DB2 Warehouse Knowledge Center](https://www.ibm.com/docs/en/cloud-paks/cp-data/4.0?topic=services-db2-warehouse)
+  
+  
