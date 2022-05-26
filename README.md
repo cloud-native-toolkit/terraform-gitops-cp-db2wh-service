@@ -2,8 +2,15 @@
 
 ### DB2WH Pre-Req
 
-- Make sure the CP4D Instance is deployed successfully
-- Make sure the global pull secret is applied and worker nodes are replaced.
+Ensure that a cluster administrator completed the required Pre-installation tasks for your environment. Specifically, verify that a cluster administrator completed the following tasks:
+
+- Cloud Pak for Data is installed. 
+- The cluster is configured to pull the Db2 Warehouse software images. 
+  - Make sure the global pull secret is applied and worker nodes are replaced.
+- The db2u-operator catalog source exists. 
+- The db2u-operator operator subscription exists. 
+
+If these tasks are not complete, the Db2 Warehouse installation will fail.
 
 ## Db2 Warehouse on Cloud Pak for Data
 
@@ -24,8 +31,13 @@ IBM Db2 Warehouse is an analytics data warehouse that features in-memory data pr
 
 Module to provision a gitops repo with the resources necessary to provision a Cloud Pak for data,ibm-db2WH-cp4d-operator Subscription and Db2WHService instance on a cluster. In order to provision Subscription and the instance, the following steps are performed:
 
-1. Add the db2wh Subscription chart to the gitops repo (charts/ibm-cpd-db2wh-subscription)
-2. Add the Db2whService instance chart to the gitops repo (charts/ibm-cpd-db2wh-instance)
+
+1. As we are using the Specialized installations architecture(where the IBM Cloud Pak foundational services operators and Cloud Pak for Data operators are in separate OpenShift projects), we must edit the IBM Cloud Pak foundational services operand registry to point to the project where the Cloud Pak for Data operators are installed: 
+  - Edit the IBM Cloud Pak foundational services operand registry
+  - Change the value of the namespace entry for the ibm-db2u-operator. Specify the OpenShift project where the Cloud Pak for Data operators are installed, for example, cpd-operators:
+  - Save the changes
+2. Add the db2wh Subscription chart to the gitops repo (charts/ibm-cpd-db2wh-subscription)
+3. Add the Db2whService instance chart to the gitops repo (charts/ibm-cpd-db2wh-instance)
 
 Unit tests is expected to be executed on a cluster that already has CP4D-instance and its dependencies installed and configured.
   
@@ -58,6 +70,9 @@ Run this CLI and check if the DB2WHService completed.
 - oc project gitops-cp4d-instance
 
 - oc get Db2whService db2wh-cr -o jsonpath='{.status.db2whStatus} {"\n"}'
+  
+Db2 Warehouse is ready when the command returns Completed
+
 
 ### DB2WH Service (instance) removal - Finalizer
 
