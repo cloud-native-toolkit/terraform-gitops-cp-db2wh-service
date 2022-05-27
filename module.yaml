@@ -35,18 +35,6 @@ versions:
         moduleRef:
           id: gitops
           output: server_name
-      - name: cluster_type
-        moduleRef:
-          id: cluster
-          output: platform.type_code
-      - name: cluster_ingress_hostname
-        moduleRef:
-          id: cluster
-          output: platform.ingress
-      - name: tls_secret_name
-        moduleRef:
-          id: cluster
-          output: platform.tls_secret
       - name: namespace
         moduleRef:
           id: namespace
