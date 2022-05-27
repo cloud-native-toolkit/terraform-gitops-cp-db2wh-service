@@ -76,11 +76,11 @@ Db2 Warehouse is ready when the command returns "Completed".
 
 Run this CLI and remove the finalizer value from the YAML as sometimes DB2WH service getting stuck.
 
-```oc edit db2whservice db2wh-cr -n gitops-cp4d-instance```
+- oc edit db2whservice db2wh-cr -n gitops-cp4d-instance
 
 ## Supported platforms
 
-OCP 4.8.36
+OCP 4.8.36 
 
 ## References:
 
