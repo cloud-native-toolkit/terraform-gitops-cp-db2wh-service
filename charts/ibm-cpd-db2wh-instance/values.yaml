@@ -1,9 +1,9 @@
-name: db2wh-cr
-cpd_namespace: gitops-cp4d-instance
+# name: db2wh-cr
+# cpd_namespace: gitops-cp4d-instance
 
-license_accept: true
-license: Enterprise
+# license_accept: true
+# license: Enterprise
 
-db_type: db2wh
+# db_type: db2wh
 
 
