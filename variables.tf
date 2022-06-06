@@ -152,4 +152,4 @@ variable "license" {
   default     = "Enterprise"
 }
 
-# db2wh = "cp4d-db2wh"
+
