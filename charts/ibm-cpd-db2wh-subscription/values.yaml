@@ -7,5 +7,4 @@ db2wh_channel: v1.0
 
 name: ibm-db2wh-cp4d-operator-catalog-subscription
 operator_namespace: cpd-operators
-common_services_namespace: ibm-common-services
-cpd_namespace: gitops-cp4d-instance
+

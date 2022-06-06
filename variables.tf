@@ -128,12 +128,6 @@ variable "common_services_namespace" {
   default     = "ibm-common-services"
 }
 
-variable "cpd_operators" {
-  type        = string
-  description = "Namespace where cpd is deployed"
-  default     = "cpd-operators"
-}
-
 variable "storage_class" {
   type        = string
   description = "Storage class for DB2WH instance"

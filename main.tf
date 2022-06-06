@@ -36,14 +36,13 @@ locals {
 
     name= "ibm-db2wh-cp4d-operator-catalog-subscription"
     operator_namespace = var.operator_namespace
-    common_services_namespace = var.common_services_namespace
-    cpd_namespace = var.cpd_namespace
+
   }
 
   instance_content = {
     name = "db2wh-cr"
     cpd_namespace = var.cpd_namespace
-    operator_namespace = var.operator_namespace
+
     spec = {
       license = {
         accept = "true"
