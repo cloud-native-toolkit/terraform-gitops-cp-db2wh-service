@@ -28,12 +28,9 @@ locals {
   subscription_content = {
     license_accept = true
     license = var.license
-
     db2wh_namespace =var.namespace
     db2wh_version =var.db2_warehouse_version
     db2wh_channel=var.db2_warehouse_channel
-
-
     name= "ibm-db2wh-cp4d-operator-catalog-subscription"
     operator_namespace = var.operator_namespace
 
