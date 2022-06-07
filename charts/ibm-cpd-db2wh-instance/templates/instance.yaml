@@ -2,7 +2,7 @@ apiVersion: databases.cpd.ibm.com/v1
 kind: Db2whService
 metadata:
   name: {{ .Values.name }}
-  namespace: gitops-cp4d-instance
+  namespace: {{ .Values.cpd_namespace }} 
   annotations:
     argocd.argoproj.io/sync-wave: "1" 
 spec:

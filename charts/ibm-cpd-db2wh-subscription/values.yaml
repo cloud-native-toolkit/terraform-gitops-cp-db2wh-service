@@ -1,11 +1,10 @@
-license_accept: true
-license: Enterprise
+# license_accept: true
+# license: Enterprise
 
-db2wh_namespace: gitops-cp-db2wh
-db2wh_version: 4.0.2
-db2wh_channel: v1.0
+# db2wh_namespace: gitops-cp-db2wh
+# db2wh_version: 4.0.2
+# db2wh_channel: v1.0
 
-name: ibm-db2wh-cp4d-operator-catalog-subscription
-operator_namespace: cpd-operators
-common_services_namespace: ibm-common-services
-cpd_namespace: gitops-cp4d-instance
+# name: ibm-db2wh-cp4d-operator-catalog-subscription
+# operator_namespace: cpd-operators
+

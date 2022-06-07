@@ -80,7 +80,7 @@ Run this CLI and remove the finalizer value from the YAML as sometimes DB2WH ser
 
 ## Supported platforms
 
-OCP 4.8.36 
+- OCP 4.8.36 
 
 ## References:
 
