@@ -12,7 +12,6 @@ Ensure that a cluster administrator completed the required Pre-installation task
 
 If these tasks are not complete, the Db2 Warehouse installation will fail.
 
-
 ## Db2 Warehouse on Cloud Pak for Data
 
 IBM Db2 Warehouse is an analytics data warehouse that features in-memory data processing and in-database analytics. It is client-managed and optimized for fast and flexible deployment, with automated scaling that supports analytics workloads. 
