@@ -36,6 +36,13 @@ locals {
 
   }
 
+  operand_content = {
+
+   operator_namespace = var.operator_namespace
+   common_services_namespace = var.common_services_namespace
+  
+  }
+
   instance_content = {
     name = "db2wh-cr"
     cpd_namespace = var.cpd_namespace
@@ -89,7 +96,7 @@ resource null_resource create_operandregistry_yaml {
     command = "${path.module}/scripts/create-yaml.sh '${local.operandregistry_name}' '${local.operandregistry_yaml_dir}'"
 
     environment = {
-      VALUES_CONTENT = yamlencode(local.subscription_content)
+      VALUES_CONTENT = yamlencode(local.operand_content)
     }
   }
 }
