@@ -1,2 +1,2 @@
-operator_namespace: cpd-operators
-common_services_namespace: ibm-common-services
+# operator_namespace: cpd-operators
+# common_services_namespace: ibm-common-services
