@@ -18,10 +18,14 @@ versions:
         refs:
           - source: github.com/cloud-native-toolkit/terraform-gitops-namespace.git
             version: ">= 1.0.0"
-      - id: gitops-db2
+      # - id: gitops-db2
+      #   refs:
+      #     - source: github.com/cloud-native-toolkit/terraform-gitops-db2u-operator.git
+      #       version: ">= 0.0.1" 
+      - id: gitops-cp4d-instance
         refs:
-          - source: github.com/cloud-native-toolkit/terraform-gitops-db2u-operator.git
-            version: ">= 0.0.1" 
+          - source: github.com/cloud-native-toolkit/terraform-gitops-cp4d-instance.git
+            version: ">= 1.0.0"  
     variables:
       - name: gitops_config
         moduleRef:
