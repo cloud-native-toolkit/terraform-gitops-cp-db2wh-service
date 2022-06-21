@@ -49,7 +49,6 @@ validate_gitops_content "${NAMESPACE}" "${LAYER}" "${SERVER_NAME}" "${TYPE}" "${
 
 check_k8s_namespace "${OPERATOR_NAMESPACE}"
 check_k8s_namespace "${CPD_NAMESPACE}"
-check_k8s_namespace "${NAMESPACE}"
 
 CSV=$(kubectl get sub -n "${OPERATOR_NAMESPACE}" "${SUBSCRIPTION_NAME}" -o json | jq -r '.status.installedCSV')
 echo "CSV ***** "${CSV}""
