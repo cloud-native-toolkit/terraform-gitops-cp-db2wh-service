@@ -1,6 +1,8 @@
 name: gitops-cp-db2wh
 type: terraform
-description: ""
+description: Module to populate a gitops repo with the resources required to provision a DB2 Warehouse instance from IBM Cloud Pak for Data.
+interfaces:
+  - github.com/cloud-native-toolkit/automation-modules#database-secret
 tags:
   - tools
   - gitops

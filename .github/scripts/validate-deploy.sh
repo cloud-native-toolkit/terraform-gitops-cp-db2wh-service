@@ -1,7 +1,30 @@
 #!/usr/bin/env bash
 
+SCRIPT_DIR=$(cd $(dirname "$0"); pwd -P)
+
 GIT_REPO=$(cat git_repo)
 GIT_TOKEN=$(cat git_token)
+
+BIN_DIR=$(cat .bin_dir)
+
+export PATH="${BIN_DIR}:${PATH}"
+
+source "${SCRIPT_DIR}/validation-functions.sh"
+
+if ! command -v oc 1> /dev/null 2> /dev/null; then
+  echo "oc cli not found" >&2
+  exit 1
+fi
+
+if ! command -v kubectl 1> /dev/null 2> /dev/null; then
+  echo "kubectl cli not found" >&2
+  exit 1
+fi
+
+if ! command -v ibmcloud 1> /dev/null 2> /dev/null; then
+  echo "ibmcloud cli not found" >&2
+  exit 1
+fi
 
 export KUBECONFIG=$(cat .kubeconfig)
 NAMESPACE=$(cat .namespace)
@@ -22,53 +45,32 @@ cd .testrepo || exit 1
 
 find . -name "*"
 
-if [[ ! -f "argocd/${LAYER}/cluster/${SERVER_NAME}/${TYPE}/${NAMESPACE}-${COMPONENT_NAME}.yaml" ]]; then
-  echo "ArgoCD config missing - argocd/${LAYER}/cluster/${SERVER_NAME}/${TYPE}/${NAMESPACE}-${COMPONENT_NAME}.yaml"
-  exit 1
-fi
+validate_gitops_content "${NAMESPACE}" "${LAYER}" "${SERVER_NAME}" "${TYPE}" "${COMPONENT_NAME}" values.yaml
 
-echo "Printing argocd/${LAYER}/cluster/${SERVER_NAME}/${TYPE}/${NAMESPACE}-${COMPONENT_NAME}.yaml"
-cat "argocd/${LAYER}/cluster/${SERVER_NAME}/${TYPE}/${NAMESPACE}-${COMPONENT_NAME}.yaml"
+check_k8s_namespace "${OPERATOR_NAMESPACE}"
+check_k8s_namespace "${CPD_NAMESPACE}"
+check_k8s_namespace "${NAMESPACE}"
 
-if [[ ! -f "payload/${LAYER}/namespace/${NAMESPACE}/${COMPONENT_NAME}/values.yaml" ]]; then
-  echo "Application values not found - payload/${LAYER}/namespace/${NAMESPACE}/${COMPONENT_NAME}/values.yaml"
-  exit 1
-fi
-
-echo "Printing payload/${LAYER}/namespace/${NAMESPACE}/${COMPONENT_NAME}/values.yaml"
-cat "payload/${LAYER}/namespace/${NAMESPACE}/${COMPONENT_NAME}/values.yaml"
+CSV=$(kubectl get sub -n "${OPERATOR_NAMESPACE}" "${SUBSCRIPTION_NAME}" -o json | jq -r '.status.installedCSV')
+echo "CSV ***** "${CSV}""
 
 count=0
-until kubectl get namespace "${NAMESPACE}" 1>/dev/null 2>/dev/null || [[ $count -eq 20 ]]; do
-  echo "Waiting for namespace: ${NAMESPACE}"
-  count=$((count + 1))
-  sleep 15
-done
-
-if [[ $count -eq 20 ]]; then
-  echo "Timed out waiting for namespace: ${NAMESPACE}"
-  exit 1
-else
-  echo "Found namespace: ${NAMESPACE}. Sleeping for 30 seconds to wait for everything to settle down"
-  sleep 30
-fi
-
-echo "OPERATOR_NAMESPACE ***** "${OPERATOR_NAMESPACE}""
-echo "SUBSCRIPTION_NAME *****"${SUBSCRIPTION_NAME}""
-sleep 30
-
-CSV=$(kubectl get sub -n "${OPERATOR_NAMESPACE}" "${SUBSCRIPTION_NAME}" -o jsonpath='{.status.installedCSV} {"\n"}')
-echo "CSV ***** "${CSV}""
 SUB_STATUS=0
-while [[ $SUB_STATUS -ne 1 ]]; do
-  sleep 10
-  SUB_STATUS=$(kubectl get deployments -n "${OPERATOR_NAMESPACE}" -l olm.owner="${CSV}" -o jsonpath="{.items[0].status.availableReplicas} {'\n'}")
+while [[ $SUB_STATUS -ne 1 ]] && [[ $count -lt 30 ]]; do
+  count=$((count + 1))
+  sleep 30
+  SUB_STATUS=$(kubectl get deployments -n "${OPERATOR_NAMESPACE}" -l olm.owner="${CSV}" -o json | jq -r '.items[0].status.availableReplicas')
   echo "SUB_STATUS ${SUB_STATUS} **** Waiting for subscription/${SUBSCRIPTION_NAME} in ${OPERATOR_NAMESPACE}"
 done
 
+if [[ $SUB_STATUS -ne 1 ]]; then
+  echo "Timed out waiting for sub-status" >&2
+  exit 1
+fi
+
 echo "DB2WH  Operator is READY"
 
-echo "CPD_NAMESPACE *****"${CPD_NAMESPACE}""
+echo "CPD_NAMESPACE ***** ${CPD_NAMESPACE}"
 sleep 60
 INSTANCE_STATUS=""
 
@@ -85,6 +87,9 @@ INSTANCE_STATUS=""
 
 echo "DB2 Db2whService/db2wh-cr is ${INSTANCE_STATUS}"
 
+check_k8s_resource "${CPD_NAMESPACE}" "secret" db2-credentials
+
+
 echo "DB2 Operator uninstall"
 
 #oc get Db2whService -n project-name
@@ -94,6 +99,7 @@ echo "DB2 Operator uninstall"
 oc delete Db2whService db2wh-cr -n ${CPD_NAMESPACE}
 
 oc delete csv ${CSV} -n ${OPERATOR_NAMESPACE}
+
 
 # Need to revisit and remove the finalizer from db2whservice
 
