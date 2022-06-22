@@ -52,7 +52,7 @@ check_k8s_namespace "${OPERATOR_NAMESPACE}"
 #check_k8s_namespace "${NAMESPACE}"
 
 CSV=$(kubectl get sub -n "${OPERATOR_NAMESPACE}" "${SUBSCRIPTION_NAME}" -o json | jq -r '.status.installedCSV')
-echo "CSV ***** "${CSV}""
+echo "CSV ***** ${CSV}"
 
 count=0
 SUB_STATUS=0
@@ -74,12 +74,12 @@ echo "CPD_NAMESPACE ***** ${CPD_NAMESPACE}"
 sleep 60
 INSTANCE_STATUS=""
 
-  while [ true ]; do
+  while true; do
     INSTANCE_STATUS=$(kubectl get Db2whService db2wh-cr -n "${CPD_NAMESPACE}" -o jsonpath='{.status.db2whStatus} {"\n"}')
-    echo "Waiting for instance "${INSTANCE_NAME}" to be ready. Current status : "${INSTANCE_STATUS}""
-    if [ $INSTANCE_STATUS == "Completed" ]; then
+    echo "Waiting for instance ${INSTANCE_NAME} to be ready. Current status : ${INSTANCE_STATUS}"
+    if [[ "${INSTANCE_STATUS}" == "Completed" ]]; then
       break
-    elif [ $INSTANCE_STATUS == "" ]; then
+    elif [[ -z "${INSTANCE_STATUS}" ]]; then
       break
     fi
     sleep 30
