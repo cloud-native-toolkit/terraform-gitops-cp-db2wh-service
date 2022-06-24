@@ -1,6 +1,8 @@
-# CP4D - DB2 Warehourse Gitops terraform module
+# CP4D - DB2 Warehouse service gitops module
 
-### DB2WH Pre-Req
+This module populates a gitops repository with the resources necessary to provision the underlying DB2 Warehouse services that a pre-requisites to create a DB2 Warehouse instance. After this module is provisioned a DB2 Warehouse instance can then be created manually by following the steps below or by provisioning the [gitops-cp-db2wh](https://github.com/cloud-native-toolkit/terraform-gitops-cp-db2wh) module. 
+
+## DB2WH Pre-Req
 
 Ensure that a cluster administrator completed the required Pre-installation tasks for your environment. Specifically, verify that a cluster administrator completed the following tasks:
 
@@ -72,6 +74,45 @@ Run this CLI and check if the DB2WHService completed.
   
 Db2 Warehouse is ready when the command returns "Completed".
 
+### Create DB2WH database instance manually
+
+#### Grant additional privileges
+
+You must grant additional privileges to enable the web console to validate the CPU and memory values that you select for your deployment.
+
+1. To add these privileges, run the following command on the OpenShift® cluster:
+
+    ```shell
+    oc adm policy add-cluster-role-to-user system:controller:persistent-volume-binder system:serviceaccount:${NAMESPACE}:zen-databases-sa
+    ```
+
+    `${NAMESPACE}` refers where you have created the DB2OLTP instances
+
+2. After you run the command, the console is able to validate your selections by checking the available number of nodes on the cluster, whether the nodes are properly labeled and tainted, and the amount of available CPU and memory.
+
+#### Create the instance from the console
+
+You can manually create the database for DB2WH by following the instructions https://www.ibm.com/docs/en/cloud-paks/cp-data/4.0?topic=warehouse-creating-database-deployment
+
+    > This step will create the database on the cluster using CP4D Console
+
+This will create a database using many of the default values. You can adjust through the process for any resources you wish to change to support your requirements.
+
+![DB2WH DB Instance ](images/db2wh-db.jpg)
+
+1. Login to CPD console
+2. From the hamburger menu select "Data->Databases"
+3. Click **Create a database** and select a database type. Click **Next**.
+4. On the "Configure" step, provide the database name, number of nodes, CPU per node, and memory per node. Click **Next**.
+5. On the "Advanced configuration" step, select `multiple logic nodes` and the `Analytics` workload. Click **Next**.
+6. On the "System storage" step, select `portworx-db2-rwx-sc` and size of `100 GB`. Click **Next**.
+7. On the "User storage" step, select `portworx-db2-rwx-sc (RWO with 4K block size)`, set the size to `100 GB`, and the access mode to `ReadWriteOnce`. Click **Next**. 
+8. On the "Backup storage" step, click **Create new Storage**, select `Use storage template`, set the storage class to `portworx-db2-rwx-sc`, and set the size to `100 GB`. Click **Next**.
+9. On the "Transaction logs storage" step, select `Use storage template`, set the storage class to `portworx-db2-rwx-sc (RWO with 4K block size)`, and the size to `100 GB`. Click **Next**.
+10. On the "Temporary table spaces storage" step, select `Use storage template`, set the storage class to `portworx-db2-rwx-sc (RWO with 4K block size)`, and set the size to `100 GB`. Click **Finalize**.
+
+As a result, Database for DB2WH will be created.
+
 ### DB2WH Service (instance) removal - Finalizer
 
 Run this CLI and remove the finalizer value from the YAML as sometimes DB2WH service getting stuck.
@@ -85,5 +126,4 @@ Run this CLI and remove the finalizer value from the YAML as sometimes DB2WH ser
 ## References:
 
 - [DB2 Warehouse Knowledge Center](https://www.ibm.com/docs/en/cloud-paks/cp-data/4.0?topic=services-db2-warehouse)
-  
   
