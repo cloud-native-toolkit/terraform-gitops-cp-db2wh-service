@@ -1,6 +1,6 @@
-name: gitops-cp-db2wh
-type: terraform
-description: ""
+name: gitops-cp-db2wh-service
+type: gitops
+description: "Module to populate a GitOps repo with the resources to deploy the underlying DB2 Warehouse services from CP4D required to create a DB2 Warehouse instance"
 tags:
   - tools
   - gitops
@@ -18,10 +18,6 @@ versions:
         refs:
           - source: github.com/cloud-native-toolkit/terraform-gitops-namespace.git
             version: ">= 1.0.0"
-      # - id: gitops-db2
-      #   refs:
-      #     - source: github.com/cloud-native-toolkit/terraform-gitops-db2u-operator.git
-      #       version: ">= 0.0.1" 
       - id: gitops-cp4d-instance
         refs:
           - source: github.com/cloud-native-toolkit/terraform-gitops-cp4d-instance.git
