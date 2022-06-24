@@ -1,4 +1,4 @@
-id: github.com/cloud-native-toolkit/terraform-gitops-cp-db2wh
+id: github.com/cloud-native-toolkit/terraform-gitops-cp-db2wh-service
 name: gitops-cp-db2wh-service
 type: gitops
 description: ''
