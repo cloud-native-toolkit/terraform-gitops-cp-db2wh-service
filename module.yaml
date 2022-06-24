@@ -1,5 +1,7 @@
 name: gitops-cp-db2wh
 type: terraform
+interfaces:
+  - github.com/cloud-native-toolkit/automation-modules#database-secret
 description: ""
 tags:
   - tools

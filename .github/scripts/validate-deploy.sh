@@ -83,6 +83,8 @@ INSTANCE_STATUS=""
     sleep 30
   done
 
+oc get secret -n "${CPD_NAMESPACE}"
+
 echo "DB2 Db2whService/db2wh-cr is ${INSTANCE_STATUS}"
 
 echo "DB2 Operator uninstall"
