@@ -1,7 +1,7 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: {{ .Values.jobName }}-db2wh-kernel-config
+  name: {{ .Values.jobName }}-db2wh-kernel-config-finalize
   namespace: {{ .Values.cpd_namespace }}
   annotations:
     argocd.argoproj.io/sync-wave: "3"
