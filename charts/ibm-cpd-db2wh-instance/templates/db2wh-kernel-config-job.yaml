@@ -1,0 +1,36 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ .Values.jobName }}-db2wh-kernel-config
+  namespace: {{ .Values.cpd_namespace }}
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
+spec:
+  template:
+    metadata:
+      name: db2-kernel-config-pod
+      annotations:
+        checksum/config-map: {{ include (print $.Template.BasePath "/kernel-config-configmap.yaml") . | sha256sum }}
+    spec:
+      restartPolicy: Never
+      containers:
+        - name: db2-kernel-setup-pod
+          image: quay.io/ibmgaragecloud/alpine-curl
+          volumeMounts:
+            - mountPath: /db2scripts
+              name: db2scripts
+          env:
+            - name: InstanceNamespace
+              value: {{ .Values.namespace }}
+            - name: OperatorNamespace
+              value: {{ .Values.operator_namespace }}
+          command:
+            - /bin/sh
+          args:
+            - '-c'
+            - cat /db2scripts/cp_db2_kernel_setup.sh && ls -l /db2scripts/ && /db2scripts/cp_db2_kernel_setup.sh
+      volumes:
+        - name: db2scripts
+          configMap:
+            name: db2-kernel-config-script
+            defaultMode: 0777
