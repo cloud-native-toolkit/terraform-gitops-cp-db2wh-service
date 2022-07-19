@@ -111,6 +111,7 @@ module setup_instance_cpd_rbac {
   namespace                 = var.cpd_namespace
   rules                     = [
     {
+      apiGroups = []
       resources = ["pods","deployments","configmaps","secrets"]
       verbs = ["get", "apply", "list", "patch", "delete"]
     }
@@ -129,6 +130,7 @@ module setup_instance_operator_rbac {
   namespace                 = var.operator_namespace
   rules                     = [
     {
+      apiGroups = []
       resources = ["pods","deployments","configmaps","secrets"]
       verbs = ["get", "apply", "list", "patch", "delete"]
     }
