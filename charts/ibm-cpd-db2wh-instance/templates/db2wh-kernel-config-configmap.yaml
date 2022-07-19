@@ -10,7 +10,7 @@ data:
     #!/bin/sh
 
     oc patch deployment ibm-db2wh-cp4d-operator-controller-manager --patch '{"spec": {"replicas": 0}}' -n "${OperatorNamespace}"
-    oc get cm db2u-json-cm -n="${InstanceNamespace}" -o=json | sed 's/set-kernel-params\\\": false/set-kernel-params\\\": true/g' | oc apply -f-
+    oc get cm db2u-json-cm -n="${InstanceNamespace}" -o=json | sed 's/set-kernel-params\\\": true/set-kernel-params\\\": false/g' | oc apply -f-
     oc delete po $(oc get po -n="${InstanceNamespace}" | grep zen-database-core | awk {'print $1'}) -n="${InstanceNamespace}"
     sleep 30s
   cp_db2_finalize_kernel_setup.sh: |
