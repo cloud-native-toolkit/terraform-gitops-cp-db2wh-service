@@ -15,7 +15,7 @@ spec:
       restartPolicy: Never
       containers:
         - name: db2-kernel-setup-pod
-          image: quay.io/cloudnativetoolkit/cli-tools
+          image: quay.io/cloudnativetoolkit/cli-tools-core
           volumeMounts:
             - mountPath: /db2scripts
               name: db2scripts
