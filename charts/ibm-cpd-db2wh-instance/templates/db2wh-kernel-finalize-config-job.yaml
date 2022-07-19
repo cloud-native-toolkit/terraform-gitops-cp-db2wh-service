@@ -22,7 +22,7 @@ spec:
               name: db2scripts
           env:
             - name: InstanceNamespace
-              value: {{ .Values.namespace }}
+              value: {{ .Values.cpd_namespace }}
             - name: OperatorNamespace
               value: {{ .Values.operator_namespace }}
           command:

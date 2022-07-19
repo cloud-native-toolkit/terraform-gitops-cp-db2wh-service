@@ -46,6 +46,7 @@ locals {
   instance_content = {
     name = "db2wh-cr"
     cpd_namespace = var.cpd_namespace
+    operator_namespace = var.operator_namespace
 
     spec = {
       license = {
@@ -107,7 +108,7 @@ module setup_instance_cpd_rbac {
   gitops_config             = var.gitops_config
   git_credentials           = var.git_credentials
   service_account_namespace = var.cpd_namespace
-  service_account_name      = "db2wh-instance-sa"
+  service_account_name      = module.setup_instance_service_account.name
   namespace                 = var.cpd_namespace
   rules                     = [
     {
@@ -122,11 +123,12 @@ module setup_instance_cpd_rbac {
 
 module setup_instance_operator_rbac {
   source = "github.com/cloud-native-toolkit/terraform-gitops-rbac.git?ref=v1.7.1"
+  depends_on = [module.setup_instance_cpd_rbac]
 
   gitops_config             = var.gitops_config
   git_credentials           = var.git_credentials
   service_account_namespace = var.cpd_namespace
-  service_account_name      = "db2wh-instance-sa"
+  service_account_name      = module.setup_instance_service_account.name
   namespace                 = var.operator_namespace
   rules                     = [
     {
