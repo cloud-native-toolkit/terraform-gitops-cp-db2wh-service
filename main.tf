@@ -117,7 +117,7 @@ module setup_instance_cpd_rbac {
     }
   ]
   server_name               = var.server_name
-  cluster_scope             = true
+  cluster_scope             = false
 }
 
 module setup_instance_operator_rbac {
@@ -125,7 +125,7 @@ module setup_instance_operator_rbac {
 
   gitops_config             = var.gitops_config
   git_credentials           = var.git_credentials
-  service_account_namespace = local.namespace
+  service_account_namespace = var.cpd_namespace
   service_account_name      = "db2wh-instance-sa"
   namespace                 = var.operator_namespace
   rules                     = [
@@ -136,7 +136,7 @@ module setup_instance_operator_rbac {
     }
   ]
   server_name               = var.server_name
-  cluster_scope             = true
+  cluster_scope             = false
 }
 
 resource null_resource create_operandregistry_yaml {
