@@ -69,7 +69,7 @@ module setup_service_account {
   git_credentials = var.git_credentials
   namespace = local.namespace
   name = "db2wh-operandreg-sa"
-  server_name = var.server_name    
+  server_name = var.server_name
 }
 
 module setup_rbac {

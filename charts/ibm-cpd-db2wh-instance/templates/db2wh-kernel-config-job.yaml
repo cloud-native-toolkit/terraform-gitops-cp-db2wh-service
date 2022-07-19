@@ -12,6 +12,7 @@ spec:
       annotations:
         checksum/config-map: {{ include (print $.Template.BasePath "/db2wh-kernel-config-configmap.yaml") . | sha256sum }}
     spec:
+      serviceAccountName: db2wh-cpd-sa
       restartPolicy: Never
       containers:
         - name: db2-kernel-setup-pod
