@@ -2,6 +2,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: db2-kernel-config-script
+  namespace: {{ .Values.cpd_namespace }}
   labels:
     app: cp-db2-kernel
 data:
