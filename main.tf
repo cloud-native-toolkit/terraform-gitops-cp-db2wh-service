@@ -91,6 +91,52 @@ module setup_rbac {
   cluster_scope             = true
 }
 
+module setup_instance_service_account {
+  source = "github.com/cloud-native-toolkit/terraform-gitops-service-account.git"
+
+  gitops_config = var.gitops_config
+  git_credentials = var.git_credentials
+  namespace = var.cpd_namespace
+  name = "db2wh-instance-sa"
+  server_name = var.server_name
+}
+
+module setup_instance_cpd_rbac {
+  source = "github.com/cloud-native-toolkit/terraform-gitops-rbac.git?ref=v1.7.1"
+
+  gitops_config             = var.gitops_config
+  git_credentials           = var.git_credentials
+  service_account_namespace = var.cpd_namespace
+  service_account_name      = "db2wh-instance-sa"
+  namespace                 = var.cpd_namespace
+  rules                     = [
+    {
+      resources = ["pods","deployments","configmaps","secrets"]
+      verbs = ["get", "apply", "list", "patch", "delete"]
+    }
+  ]
+  server_name               = var.server_name
+  cluster_scope             = true
+}
+
+module setup_instance_operator_rbac {
+  source = "github.com/cloud-native-toolkit/terraform-gitops-rbac.git?ref=v1.7.1"
+
+  gitops_config             = var.gitops_config
+  git_credentials           = var.git_credentials
+  service_account_namespace = local.namespace
+  service_account_name      = "db2wh-instance-sa"
+  namespace                 = var.operator_namespace
+  rules                     = [
+    {
+      resources = ["pods","deployments","configmaps","secrets"]
+      verbs = ["get", "apply", "list", "patch", "delete"]
+    }
+  ]
+  server_name               = var.server_name
+  cluster_scope             = true
+}
+
 resource null_resource create_operandregistry_yaml {
   provisioner "local-exec" {
     command = "${path.module}/scripts/create-yaml.sh '${local.operandregistry_name}' '${local.operandregistry_yaml_dir}'"
