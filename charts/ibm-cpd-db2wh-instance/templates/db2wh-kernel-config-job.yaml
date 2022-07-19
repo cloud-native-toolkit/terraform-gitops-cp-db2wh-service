@@ -10,7 +10,7 @@ spec:
     metadata:
       name: db2-kernel-config-pod
       annotations:
-        checksum/config-map: {{ include (print $.Template.BasePath "/kernel-config-configmap.yaml") . | sha256sum }}
+        checksum/config-map: {{ include (print $.Template.BasePath "/db2wh-kernel-config-configmap.yaml") . | sha256sum }}
     spec:
       restartPolicy: Never
       containers:
