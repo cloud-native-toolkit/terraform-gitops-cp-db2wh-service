@@ -7,8 +7,8 @@ module "db2wh" {
   namespace                = module.gitops_namespace.name
   kubeseal_cert            = module.gitops.sealed_secrets_cert
 
-  operator_namespace= "cpd-operators"  
-  cpd_namespace = "gitops-cp4d-instance"
-  common_services_namespace = "ibm-common-services"
+  operator_namespace= var.cpd_operator_namespace
+  cpd_namespace = var.cpd_namespace
+  common_services_namespace = var.cpd_common_services_namespace
 }
 
